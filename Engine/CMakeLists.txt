@@ -1,11 +1,5 @@
-# =========================================================
-# Wrangler Engine
-# =========================================================
-
-add_library(
-    WranglerEngine
+add_library(Wrangler
     STATIC
-
     src/stb_image.cpp
 
     src/Core/Application.cpp
@@ -22,24 +16,12 @@ add_library(
     src/AssetManager/AssetManager.cpp
 )
 
-
-# =========================================================
-# Wrangler public headers
-# =========================================================
-
-target_include_directories(
-    WranglerEngine
+target_include_directories(Wrangler
     PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        $"{CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
-
-# =========================================================
-# Wrangler dependencies
-# =========================================================
-
-target_link_libraries(
-    WranglerEngine
+target_link_libraries(Wrangler
     PUBLIC
-        WranglerDependencies
+        StratoDependencies
 )
