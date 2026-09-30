@@ -18,7 +18,7 @@ add_library(Wrangler
 
 target_include_directories(Wrangler
     PUBLIC
-        $"{CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 target_link_libraries(Wrangler
