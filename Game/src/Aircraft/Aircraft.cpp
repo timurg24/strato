@@ -57,8 +57,8 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
     controlState.pitchTrim = fcs->GetPitchTrimCmd(); // TODO: Review what changes this makes
     controlState.engineCount = propulsion->GetNumEngines();
     if(controlState.engineCount > STRATO_MAX_ENGINES) {
-        controlState.engineCount = STRATO_MAX_ENGINES;
         tul::Alert({"Engine count (", std::to_string(controlState.engineCount), ") exceeds max limit of ", std::to_string(STRATO_MAX_ENGINES), " engines"});
+        controlState.engineCount = STRATO_MAX_ENGINES;
     }
 
     // load 3d
