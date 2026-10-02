@@ -37,23 +37,6 @@
 #include <tul/ErrorOps.hpp>
 #include <tul/StringOps.hpp>
 
-/// @brief Sets some default values
-void StartupState::setDefaultValues()
-{
-    // 31.719943321617503, -110.07055444789162
-    payloadWeightLbs    = 170.0;
-
-    fuelLbs             = {80.0, 80.0};
-
-    registration        = "N881OK";
-
-    latitude            = 31.719943;
-    longitude           = -110.070554;
-    altitude            = 200.0;
-
-    airspeed            = 125.0;
-}
-
 /// @brief Initializes the aircraft and JSBSim systems
 void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::string& aircraftFileName, const StartupState& state, Wrangler::Renderer& renderer, Wrangler::AssetManager& assets) {
     initJSBSystems();
@@ -203,6 +186,15 @@ void Aircraft::readFromJSBSim()
         propagate->GetEuler(JSBSim::FGJSBBase::ePsi)
     };
 
+    aircraftState.roll =
+        aircraftState.eulerAngles.x;
+
+    aircraftState.pitch =
+        aircraftState.eulerAngles.y;
+
+    aircraftState.heading =
+        aircraftState.eulerAngles.z;
+
     aircraftState.eulerRates = {
         aux->GetEulerRates(JSBSim::FGJSBBase::ePhi),
         aux->GetEulerRates(JSBSim::FGJSBBase::eTht),
@@ -284,9 +276,9 @@ void Aircraft::readFromJSBSim()
 void Aircraft::update3DRotation()
 {
     entity.rotation = {
-        static_cast<float>(-aircraftState.eulerAngles.y), // pitch / theta
-        static_cast<float>( aircraftState.eulerAngles.z), // heading / psi
-        static_cast<float>( aircraftState.eulerAngles.x)  // roll / phi
+        static_cast<float>(-aircraftState.pitch), // pitch / theta
+        static_cast<float>( aircraftState.heading), // heading / psi
+        static_cast<float>( aircraftState.roll)  // roll / phi
     };
 }
 

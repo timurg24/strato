@@ -40,7 +40,6 @@ int main(int argc, char** argv) {
 
     // Flight
     StartupState startup = {};
-    startup.setDefaultValues();
     Aircraft cessna;
     cessna.init(
         "../Content/Aircraft/Cessna 172P Skyhawk", "c172p", 

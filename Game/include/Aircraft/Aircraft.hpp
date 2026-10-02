@@ -39,16 +39,16 @@ namespace JSBSim {
 }
 
 struct StartupState {
-    double payloadWeightLbs;
-    std::vector<double> fuelLbs; // in lbd
+    double payloadWeightLbs                 = 170.0;
+    std::vector<double> fuelLbs             = {80.0, 80.0};
 
-    std::string registration;
+    std::string registration                = "N881OK";
 
-    double latitude, longitude, altitude;
+    double latitude                         = 31.719943;
+    double longitude                        = -110.070554;
+    double altitude                         = 200.0;
 
-    double airspeed;
-
-    void setDefaultValues();
+    double airspeed                         = 120.0;
 };
 
 class Aircraft {
