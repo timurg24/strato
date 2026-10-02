@@ -95,7 +95,7 @@ void Aircraft::coypToJSBSim()
     fcs->SetDrCmd(controlState.rudder); // set rudder
     fcs->SetDsCmd(controlState.rudder); // set rudder
     fcs->SetDsbCmd(controlState.speedBrake); // set speedbrake
-    fcs->SetDsbCmd(controlState.spoiler); // set speedbrake
+    fcs->SetDspCmd(controlState.spoiler); // set spoiler
 
     // brakes
     UnsignedNormal leftBrake = controlState.leftBrake;
