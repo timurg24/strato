@@ -55,8 +55,6 @@ class Aircraft {
 public:
     Aircraft() = default;
     void init(const std::filesystem::path& aircraftFolder, const std::string& aircraftFileName, const StartupState& state, Wrangler::Renderer& renderer, Wrangler::AssetManager& assets);
-    void coypToJSBSim();
-    void readFromJSBSim();
     void update(double dt);
     
     double getAltitude();
@@ -64,7 +62,11 @@ public:
     Wrangler::RenderableEntity entity;
     
     std::string registration;
-private:
+
+    AircraftState                               aircraftState;
+    ControlState                                controlState;
+    EnvironmentState                            envState;
+// private:
     
     // =================
     //      JSBSim
@@ -87,12 +89,11 @@ private:
     std::shared_ptr<JSBSim::FGInertial>         inertial;
     std::shared_ptr<JSBSim::FGAccelerations>    accelerations;
 
-    AircraftState                               aircraftState;
-    ControlState                                controlState;
-    EnvironmentState                            envState;
     // TODO: Make env state a reference to some other environment object
 
     // TODO: Follow JSB sim example and add hooks
+
+private:
 
     // =================
     //   Initializers
@@ -100,5 +101,10 @@ private:
     bool initJSBSystems();
     bool loadFlightModels(const std::filesystem::path& aircraftFolder, const std::string& aircraftFileName);
     bool setupStartupState(const StartupState& state);
+
+    void coypToJSBSim();
+    void readFromJSBSim();
+
+    void update3DRotation();
 
 };

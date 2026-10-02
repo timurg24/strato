@@ -49,7 +49,7 @@ void StartupState::setDefaultValues()
 
     latitude            = 31.719943;
     longitude           = -110.070554;
-    altitude            = 5000.0;
+    altitude            = 200.0;
 
     airspeed            = 125.0;
 }
@@ -184,6 +184,27 @@ void Aircraft::coypToJSBSim()
 /// @brief Reads AircraftState from JSBSim
 void Aircraft::readFromJSBSim()
 {
+    aircraftState.roll =
+        propagate->GetEuler(JSBSim::FGJSBBase::ePhi);
+
+    aircraftState.pitch =
+        propagate->GetEuler(JSBSim::FGJSBBase::eTht);
+
+    aircraftState.heading =
+        propagate->GetEuler(JSBSim::FGJSBBase::ePsi);
+
+    aircraftState.altitude =
+        propagate->GetAltitudeASL();
+}
+
+/// @brief Sets the RenderEntity rotation to that of data from JSBSim
+void Aircraft::update3DRotation()
+{
+    entity.rotation = {
+        static_cast<float>(-aircraftState.pitch),
+        static_cast<float>(aircraftState.heading),
+        static_cast<float>(aircraftState.roll)
+    };
 }
 
 void Aircraft::update(double dt)
@@ -191,6 +212,8 @@ void Aircraft::update(double dt)
     // read inputs
     fdm->Run();
     coypToJSBSim();
+    readFromJSBSim();
+    update3DRotation();
 }
 
 /// @brief Returns the altitude

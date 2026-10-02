@@ -123,6 +123,8 @@ int main(int argc, char** argv) {
 
         renderer.renderEntity(cessna.entity, params);
 
+        std::cout << "Altitude: " << cessna.propagate->GetAltitudeASL() << "\n";
+
         app.swapBuffers();
     }
 }

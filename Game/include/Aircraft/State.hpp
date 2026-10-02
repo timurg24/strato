@@ -11,6 +11,9 @@
 // std
 #include <array>
 
+// limits
+#define STRATO_MAX_ENGINES 10
+
 // What the aircraft is doing now
 // No user inputs go into here
 struct AircraftState {
@@ -39,6 +42,10 @@ struct AircraftState {
     double          latitude;
     double          longitude;
     double          airspeed;
+
+    double          roll;
+    double          pitch;
+    double          heading;
 };
 
 // Engine controls
@@ -95,22 +102,22 @@ struct ControlState {
     bool            gear; // true is up
 
     int engineCount;
-    std::array<EngineState, 10> engines;
+    std::array<EngineState, STRATO_MAX_ENGINES> engines;
 };
 
 // What affects the aircraft
 struct EnvironmentState {
-    double    temperature;
+    double    temperature           = 15.0; // c
     double    pressure;
-    double    pressureSL;
+    double    pressureSL            = 29.92; // inHg
     double    groundWind; 
     double    turbelanceGain; 
     double    turbelanceRate; 
     double    turbelanceModel;
 
-    double    windNorth; 
-    double    windEast; 
-    double    windDown; 
+    double    windNorth             = 0.0; 
+    double    windEast              = 0.0; 
+    double    windDown              = 0.0; 
 
     /*
         TODO:
