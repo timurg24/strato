@@ -130,7 +130,9 @@ void Aircraft::coypToJSBSim()
                         propulsion->GetEngine(i)
                     );
 
-                eng->SetMagnetos(controlState.engines[i].magnetos);
+                eng->SetMagnetos(
+                    static_cast<int>(controlState.engines[i].magnetos)
+                );
             }
             break;
             case JSBSim::FGEngine::EngineType::etTurbine:

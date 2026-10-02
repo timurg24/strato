@@ -148,6 +148,13 @@ struct AircraftState {
     double localToBody[3][3]{};
 };
 
+enum class MagnetoState : int {
+    Off     = 1,
+    Left,
+    Right,
+    Both
+};
+
 // Engine controls
 struct EngineState {
 
@@ -160,7 +167,7 @@ struct EngineState {
     UnsignedNormal  feather         = 0.0;
 
     // piston
-    UnsignedNormal  magnetos        = 0.0;
+    MagnetoState  magnetos          = MagnetoState::Off;
 
     // turbine
     UnsignedNormal  augmentation    = 0.0;
