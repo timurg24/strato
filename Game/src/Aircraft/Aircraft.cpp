@@ -229,10 +229,10 @@ void Aircraft::readFromJSBSim()
     };
 
     // air data
-    aircraftState.trueAirspeed = aux->GetVtrueKTS();
-    aircraftState.equivalentAirspeed = aux->GetVequivalentKTS();
-    aircraftState.calibratedAirspeed = aux->GetVcalibratedKTS();
-    aircraftState.groundSpeed = aux->GetVground();
+    aircraftState.trueAirspeedKts = aux->GetVtrueKTS();
+    aircraftState.equivalentAirspeedKts = aux->GetVequivalentKTS();
+    aircraftState.calibratedAirspeedKts = aux->GetVcalibratedKTS();
+    aircraftState.groundSpeedFps = aux->GetVground();
     aircraftState.mach = aux->GetMach();
 
     aircraftState.angleOfAttack = aux->Getalpha();
@@ -369,7 +369,7 @@ bool Aircraft::setupStartupState(const StartupState& state)
     aircraftState.latitude  = state.latitude;
     aircraftState.longitude = state.longitude;
     aircraftState.altitudeASL  = state.altitude;
-    aircraftState.trueAirspeed  = state.airspeed;
+    aircraftState.trueAirspeedKts  = state.airspeed;
     registration            = state.registration;
 
     // FUEL THE AIRCRAFT
@@ -401,7 +401,7 @@ bool Aircraft::setupStartupState(const StartupState& state)
     );
 
     startupConditions->SetVtrueKtsIC(
-        aircraftState.trueAirspeed
+        aircraftState.trueAirspeedKts
     );
 
     return fdm->RunIC();

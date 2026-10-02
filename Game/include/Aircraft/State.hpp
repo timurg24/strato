@@ -81,10 +81,10 @@ struct AircraftState {
     // Airspeeds
     // =========================
 
-    double trueAirspeed       = 0.0;
-    double equivalentAirspeed = 0.0; // knots
-    double calibratedAirspeed = 0.0; // knots
-    double groundSpeed        = 0.0;
+    double trueAirspeedKts       = 0.0; // knots
+    double equivalentAirspeedKts = 0.0; // knots
+    double calibratedAirspeedKts = 0.0; // knots
+    double groundSpeedFps        = 0.0; // feet/second
 
     double climbRate = 0.0;
 
