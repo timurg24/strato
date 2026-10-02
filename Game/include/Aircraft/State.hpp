@@ -49,7 +49,7 @@ struct AircraftState {
     double runwayAltitude = 0.0;
 
     // Visual reference point position
-    Wrangler::Vec3 vrpPosition{};
+    FlightVec3 vrpPosition{};
 
 
     // =========================
@@ -61,7 +61,8 @@ struct AircraftState {
     double heading = 0.0;  // rad
 
     // Euler angle rates
-    Wrangler::Vec3 eulerRates{};
+    FlightVec3 eulerAngles{};
+    FlightVec3 eulerRates{};
 
 
     // =========================
@@ -87,31 +88,35 @@ struct AircraftState {
 
     double climbRate = 0.0;
 
+    double groundTrack = 0.0;
+
 
     // =========================
     // Velocities
     // =========================
 
     // North / East / Down
-    Wrangler::Vec3 velocityLocal{};
+    FlightVec3 velocityLocal{};
 
     // U / V / W aircraft body axes
-    Wrangler::Vec3 velocityBody{};
+    FlightVec3 velocityBody{};
+
+    FlightVec3 angularVelocityBody{};
 
 
     // =========================
     // Accelerations / CG
     // =========================
 
-    Wrangler::Vec3 cgPosition{};
+    FlightVec3 cgPosition{};
 
-    Wrangler::Vec3 accelsBody{};
+    FlightVec3 accelsBody{};
 
     // Normalized acceleration/load at CG
-    Wrangler::Vec3 accelsCgBodyN{};
+    FlightVec3 accelsCgBodyN{};
 
     // Acceleration at pilot location
-    Wrangler::Vec3 accelsPilotBody{};
+    FlightVec3 accelsPilotBody{};
 
 
     // =========================

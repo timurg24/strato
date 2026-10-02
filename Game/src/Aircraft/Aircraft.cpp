@@ -189,10 +189,16 @@ void Aircraft::readFromJSBSim()
     aircraftState.altitudeAGL = propagate->GetDistanceAGL();
 
     // euler
-    aircraftState.eulerRates = {
+    aircraftState.eulerAngles = {
         propagate->GetEuler(JSBSim::FGJSBBase::ePhi),
         propagate->GetEuler(JSBSim::FGJSBBase::eTht),
         propagate->GetEuler(JSBSim::FGJSBBase::ePsi)
+    };
+
+    aircraftState.eulerRates = {
+        aux->GetEulerRates(JSBSim::FGJSBBase::ePhi),
+        aux->GetEulerRates(JSBSim::FGJSBBase::eTht),
+        aux->GetEulerRates(JSBSim::FGJSBBase::ePsi)
     };
 
     // velocity
@@ -203,6 +209,12 @@ void Aircraft::readFromJSBSim()
     };
 
     aircraftState.velocityBody = {
+        propagate->GetUVW(1),
+        propagate->GetUVW(2),
+        propagate->GetUVW(3)
+    };
+
+    aircraftState.angularVelocityBody = {
         propagate->GetPQR(JSBSim::FGJSBBase::eP),
         propagate->GetPQR(JSBSim::FGJSBBase::eQ),
         propagate->GetPQR(JSBSim::FGJSBBase::eR)
@@ -246,15 +258,27 @@ void Aircraft::readFromJSBSim()
         massBalance->GetXYZcg(2),
         massBalance->GetXYZcg(3)
     };
+
+    // position
+    const auto& location = propagate->GetLocation();
+
+    aircraftState.latitude = location.GetGeodLatitudeDeg();
+    aircraftState.longitude = location.GetLongitudeDeg();
+
+    aircraftState.altitudeASL = propagate->GetAltitudeASL();
+    aircraftState.altitudeAGL = propagate->GetDistanceAGL();
+
+    aircraftState.climbRate = propagate->Gethdot();
+    aircraftState.groundTrack = aux->GetGroundTrack();
 }
 
 /// @brief Sets the RenderEntity rotation to that of data from JSBSim
 void Aircraft::update3DRotation()
 {
     entity.rotation = {
-        static_cast<float>(-aircraftState.pitch),
-        static_cast<float>(aircraftState.heading),
-        static_cast<float>(aircraftState.roll)
+        static_cast<float>(-aircraftState.eulerAngles.y), // pitch / theta
+        static_cast<float>( aircraftState.eulerAngles.z), // heading / psi
+        static_cast<float>( aircraftState.eulerAngles.x)  // roll / phi
     };
 }
 

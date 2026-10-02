@@ -1,12 +1,11 @@
 # strato
 
-Open Source Flight Simulator written in C++ and BGFX
+Open source flight simulator powered by JSBSim
 
 ## Folder Structure
 
-- `Engine` - Engine core
+- `Engine` - Engine core (Wrangler)
 - `Game` - Strato Flight Simulator code
-- `Shaders` - Shader authoring folder
 - `Content` - Strato Flight Simulator content (including Game and Engine packages)
 - `thirdparty` - Third party libraries
 
