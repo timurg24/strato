@@ -151,31 +151,31 @@ struct AircraftState {
 // Engine controls
 struct EngineState {
 
-    bool            starter;
-    bool            running;
+    bool            starter         = false;
+    bool            running         = false;
 
-    UnsignedNormal  throttle;
-    UnsignedNormal  mixture;
-    UnsignedNormal  propAdvance;
-    UnsignedNormal  feather;
+    UnsignedNormal  throttle        = 0.0;
+    UnsignedNormal  mixture         = 0.0;
+    UnsignedNormal  propAdvance     = 0.0;
+    UnsignedNormal  feather         = 0.0;
 
     // piston
-    UnsignedNormal  magnetos;
+    UnsignedNormal  magnetos        = 0.0;
 
     // turbine
-    UnsignedNormal  augmentation;
-    UnsignedNormal  ignition;
+    UnsignedNormal  augmentation    = 0.0;
+    UnsignedNormal  ignition        = 0.0;
 
     // turboprop and turbine
-    UnsignedNormal  reverser;
-    UnsignedNormal  cutOff;
+    UnsignedNormal  reverser        = 0.0;
+    UnsignedNormal  cutOff          = 0.0;
 
     // rocket
     // the example doesnt do rockets...
 
     // turboprop
-    UnsignedNormal  generatorPower;
-    UnsignedNormal  condition;
+    UnsignedNormal  generatorPower  = 0.0;
+    UnsignedNormal  condition       = 0.0;
 
 };
 
@@ -184,22 +184,22 @@ struct EngineState {
 // User inputs go here
 struct ControlState {
     // Trim
-    bool            enableStartupTrim; // automatically selects the best trim at startup
-    bool            trimmed;
-    SignedNormal    pitchTrim;
+    bool            enableStartupTrim       = false; // automatically selects the best trim at startup
+    bool            trimmed                 = false;
+    SignedNormal    pitchTrim               = 0.0;
 
-    SignedNormal    aileron;
-    SignedNormal    rudder;
-    SignedNormal    elevator;
+    SignedNormal    aileron                 = 0.0;
+    SignedNormal    rudder                  = 0.0;
+    SignedNormal    elevator                = 0.0;
 
-    UnsignedNormal  speedBrake;
-    UnsignedNormal  spoiler;
+    UnsignedNormal  speedBrake              = 0.0;
+    UnsignedNormal  spoiler                 = 0.0;
 
-    bool            parkingBrake;
-    UnsignedNormal  leftBrake;
-    UnsignedNormal  rightBrake;
+    bool            parkingBrake            = false;
+    UnsignedNormal  leftBrake               = 0.0;
+    UnsignedNormal  rightBrake              = 0.0;
 
-    bool            gear; // true is up
+    bool            gear                    = false; // true is up
 
     int engineCount;
     std::array<EngineState, STRATO_MAX_ENGINES> engines;
