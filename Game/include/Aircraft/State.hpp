@@ -5,6 +5,9 @@
  * Has different states (not the USA kind)
  */
 
+// wrangler
+#include <Wrangler/Core/Types.hpp>
+
 // core
 #include "Type/Types.hpp"
 
@@ -17,35 +20,130 @@
 // What the aircraft is doing now
 // No user inputs go into here
 struct AircraftState {
-    bool            stallWarning            = false;
-    bool            crashed                 = false;
+    // =========================
+    // General
+    // =========================
 
-    // Control surfaces
-    SignedNormal    elevatorPos             = 0.0f;
-    SignedNormal    leftAileronPos          = 0.0f;
-    SignedNormal    rightAileronPos         = 0.0f;
-    SignedNormal    rudderPos               = 0.0f;
-    UnsignedNormal  flapPos                 = 0.0f;
-    UnsignedNormal  speedBreakPos           = 0.0f;
+    bool crashed = false;
 
-    // Brakes
-    bool            autoBreakEngaged        = false;
-    UnsignedNormal  autoBreakLeftPower      = 0.0f;
-    UnsignedNormal  autoBreakRightPower     = 0.0f;
+    // JSBSim stall warning is not necessarily just on/off.
+    double stallWarning = 0.0;
 
-    // Gear (and other things)
-    UnsignedNormal  gearPos                 = 1.0f;
-    UnsignedNormal  wingFoldPos             = 0.0f;
-    UnsignedNormal  tailHookPos             = 0.0f;
+    // Normal load factor (G)
+    double loadFactor = 1.0;
 
-    double          altitude;
-    double          latitude;
-    double          longitude;
-    double          airspeed;
 
-    double          roll;
-    double          pitch;
-    double          heading;
+    // =========================
+    // Position
+    // =========================
+
+    double latitude  = 0.0;
+    double longitude = 0.0;
+
+    double altitudeASL = 0.0;  // ft above sea level
+    double altitudeAGL = 0.0;  // ft above ground
+
+    double runwayAltitude = 0.0;
+
+    // Visual reference point position
+    Wrangler::Vec3 vrpPosition{};
+
+
+    // =========================
+    // Attitude
+    // =========================
+
+    double roll    = 0.0;  // rad
+    double pitch   = 0.0;  // rad
+    double heading = 0.0;  // rad
+
+    // Euler angle rates
+    Wrangler::Vec3 eulerRates{};
+
+
+    // =========================
+    // Aerodynamics
+    // =========================
+
+    double angleOfAttack = 0.0; // alpha, rad
+    double sideslip      = 0.0; // beta, rad
+
+    double flightPathAngle = 0.0; // gamma, rad
+
+    double mach = 0.0;
+
+
+    // =========================
+    // Airspeeds
+    // =========================
+
+    double trueAirspeed       = 0.0;
+    double equivalentAirspeed = 0.0; // knots
+    double calibratedAirspeed = 0.0; // knots
+    double groundSpeed        = 0.0;
+
+    double climbRate = 0.0;
+
+
+    // =========================
+    // Velocities
+    // =========================
+
+    // North / East / Down
+    Wrangler::Vec3 velocityLocal{};
+
+    // U / V / W aircraft body axes
+    Wrangler::Vec3 velocityBody{};
+
+    // North / East / Up-style version used by FlightGear HUD
+    Wrangler::Vec3 velocityGround{};
+
+    // Angular velocity P / Q / R
+    Wrangler::Vec3 omegaBody{};
+
+
+    // =========================
+    // Accelerations / CG
+    // =========================
+
+    Wrangler::Vec3 cgPosition{};
+
+    Wrangler::Vec3 accelsBody{};
+
+    // Normalized acceleration/load at CG
+    Wrangler::Vec3 accelsCgBodyN{};
+
+    // Acceleration at pilot location
+    Wrangler::Vec3 accelsPilotBody{};
+
+
+    // =========================
+    // Control surface positions
+    // =========================
+
+    SignedNormal elevatorPos     = 0.0;
+    SignedNormal leftAileronPos  = 0.0;
+    SignedNormal rightAileronPos = 0.0;
+    SignedNormal rudderPos       = 0.0;
+
+    UnsignedNormal flapPos       = 0.0;
+    UnsignedNormal speedBrakePos = 0.0;
+    UnsignedNormal spoilerPos    = 0.0;
+
+    UnsignedNormal gearPos       = 1.0;
+    UnsignedNormal wingFoldPos   = 0.0;
+    UnsignedNormal tailHookPos   = 0.0;
+
+
+    // =========================
+    // Coordinate / Earth state
+    // =========================
+
+    double earthPositionAngle = 0.0;
+
+    // Local -> body transformation matrix.
+    // Replace with Wrangler::Mat3 if you already have one.
+    double localToBody[3][3]{};
 };
 
 // Engine controls
