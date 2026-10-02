@@ -8,6 +8,9 @@
 // core
 #include "Type/Types.hpp"
 
+// std
+#include <array>
+
 // What the aircraft is doing now
 // No user inputs go into here
 struct AircraftState {
@@ -38,6 +41,38 @@ struct AircraftState {
     double          airspeed;
 };
 
+// Engine controls
+struct EngineState {
+
+    bool            starter;
+    bool            running;
+
+    UnsignedNormal  throttle;
+    UnsignedNormal  mixture;
+    UnsignedNormal  propAdvance;
+    UnsignedNormal  feather;
+
+    // piston
+    UnsignedNormal  magnetos;
+
+    // turbine
+    UnsignedNormal  augmentation;
+    UnsignedNormal  ignition;
+
+    // turboprop and turbine
+    UnsignedNormal  reverser;
+    UnsignedNormal  cutOff;
+
+    // rocket
+    // the example doesnt do rockets...
+
+    // turboprop
+    UnsignedNormal  generatorPower;
+    UnsignedNormal  condition;
+
+};
+
+
 // What is being commanded
 // User inputs go here
 struct ControlState {
@@ -45,28 +80,41 @@ struct ControlState {
     bool            enableStartupTrim; // automatically selects the best trim at startup
     bool            trimmed;
     SignedNormal    pitchTrim;
-    
-    UnsignedNormal  throttle;
-    SignedNormal  aileron;
-    SignedNormal  rudder;
+
+    SignedNormal    aileron;
+    SignedNormal    rudder;
+    SignedNormal    elevator;
+
+    UnsignedNormal  speedBrake;
+    UnsignedNormal  spoiler;
+
+    bool            parkingBrake;
+    UnsignedNormal  leftBrake;
+    UnsignedNormal  rightBrake;
+
+    bool            gear; // true is up
+
+    int engineCount;
+    std::array<EngineState, 10> engines;
 };
 
 // What affects the aircraft
 struct EnvironmentState {
-    SignedNormal    temperature;
-    SignedNormal    pressure;
-    SignedNormal    pressureSL;
-    SignedNormal    groundWind; 
-    SignedNormal    turbelanceGain; 
-    SignedNormal    turbelanceRate; 
-    SignedNormal    turbelanceModel;
-    SignedNormal    southWind; 
-    SignedNormal    eastWind; 
-    SignedNormal    bottomWind; 
+    double    temperature;
+    double    pressure;
+    double    pressureSL;
+    double    groundWind; 
+    double    turbelanceGain; 
+    double    turbelanceRate; 
+    double    turbelanceModel;
+
+    double    windNorth; 
+    double    windEast; 
+    double    windDown; 
 
     /*
         TODO:
-        - Turbulance
+        - Turbulence
         - Weather
     */
 };

@@ -32,4 +32,6 @@ target_link_libraries(Strato
     PRIVATE
         Wrangler
         libJSBSim
+    PUBLIC
+        glfw
 )

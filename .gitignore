@@ -23,10 +23,6 @@
 *.dll
 *.so.*
 
-# Fortran module files
-*.mod
-*.smod
-
 # Compiled Static libraries
 *.lai
 *.la
@@ -57,9 +53,6 @@ compile_commands.json
 *.bak
 *.swp
 
-# vcpkg
-vcpkg_installed/
-
 # debug information files
 *.dwo
 
@@ -68,3 +61,4 @@ Testing/
 .cache/
 
 .vscode/
+*.zip

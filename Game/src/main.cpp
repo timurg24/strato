@@ -98,8 +98,12 @@ int main(int argc, char** argv) {
 
     params.pointLightCount = 0;
 
+    // todo: make jsbsim run on a fixed physics timestep
+
     while(app.running()) {
         app.pollEvents();
+
+        cessna.update(1.0 / 120.0);
 
         bgfx::setViewClear(
             0,

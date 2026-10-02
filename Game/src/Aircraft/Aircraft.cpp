@@ -70,6 +70,7 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
 
     // pitch trim
     controlState.pitchTrim = fcs->GetPitchTrimCmd(); // TODO: Review what changes this makes
+    controlState.engineCount = propulsion->GetNumEngines();
 
     // load 3d
     Wrangler::AssetID model = assets.loadModel("models/Cessna172.fbx");
@@ -83,9 +84,120 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
     };   
 }
 
-/// @brief Reads the flight control inputs and sends them to JBSSim
-void Aircraft::readInputs()
+/// @brief Copies user inputs (ControlState) to JSBSim
+void Aircraft::coypToJSBSim()
 {
+    // control surfaces
+    fcs->SetDaCmd(controlState.aileron); // set aileron
+    // skip roll trim
+    fcs->SetDeCmd(controlState.elevator); // set elevator
+    fcs->SetPitchTrimCmd(controlState.pitchTrim);
+    fcs->SetDrCmd(controlState.rudder); // set rudder
+    fcs->SetDsCmd(controlState.rudder); // set rudder
+    fcs->SetDsbCmd(controlState.speedBrake); // set speedbrake
+    fcs->SetDsbCmd(controlState.spoiler); // set speedbrake
+
+    // brakes
+    UnsignedNormal leftBrake = controlState.leftBrake;
+    UnsignedNormal rightBrake = controlState.rightBrake;
+    if(controlState.parkingBrake) {
+        leftBrake = 1.0f;
+        rightBrake = 1.0f;
+    }
+
+    fcs->SetLBrake(leftBrake);
+    fcs->SetRBrake(rightBrake);
+    fcs->SetCBrake(0.0); // why
+
+    // gear
+    fcs->SetGearCmd(controlState.gear ? 1.0 : 0.0);
+
+    // engine
+    for(int i = 0; i < controlState.engineCount; i++) {
+        const auto& engine = controlState.engines[i];
+        fcs->SetThrottleCmd(i, engine.throttle);
+        fcs->SetMixtureCmd(i, engine.mixture);
+        fcs->SetPropAdvanceCmd(i, engine.propAdvance);
+        fcs->SetFeatherCmd(i, engine.feather);
+
+        // set engine type specific values
+        switch(propulsion->GetEngine(i)->GetType()) {
+            case JSBSim::FGEngine::EngineType::etPiston:
+            {
+                // not even the creator of this type knows what this does
+                auto eng =
+                    std::dynamic_pointer_cast<JSBSim::FGPiston>(
+                        propulsion->GetEngine(i)
+                    );
+
+                eng->SetMagnetos(controlState.engines[i].magnetos);
+            }
+            break;
+            case JSBSim::FGEngine::EngineType::etTurbine:
+            {
+                // not even the creator of this type knows what this does
+                auto eng =
+                    std::dynamic_pointer_cast<JSBSim::FGTurbine>(
+                        propulsion->GetEngine(i)
+                    );
+
+                eng->SetAugmentation(controlState.engines[i].augmentation);
+                eng->SetReverse(controlState.engines[i].reverser);
+                eng->SetCutoff(controlState.engines[i].cutOff);
+                eng->SetIgnition(controlState.engines[i].ignition);
+            }
+            break;
+            case JSBSim::FGEngine::EngineType::etTurboprop:
+            {
+                // not even the creator of this type knows what this does
+                auto eng =
+                    std::dynamic_pointer_cast<JSBSim::FGTurboProp>(
+                        propulsion->GetEngine(i)
+                    );
+
+                eng->SetReverse(controlState.engines[i].reverser);
+                eng->SetCutoff(controlState.engines[i].cutOff);
+                eng->SetGeneratorPower(controlState.engines[i].generatorPower);
+                eng->SetCondition(controlState.engines[i].condition);
+            }
+            break;
+            default:
+            break;
+        }
+        // set values for the engine
+        auto eng = propulsion->GetEngine(i);
+        eng->SetStarter(controlState.engines[i].starter);
+        eng->SetRunning(controlState.engines[i].running);
+    }
+
+    // atmosphere
+    atmosphere->SetTemperature(envState.temperature, getAltitude(), JSBSim::FGAtmosphere::eCelsius);
+    atmosphere->SetPressureSL(JSBSim::FGAtmosphere::eInchesHg, envState.pressureSL);
+
+    winds->SetWindNED(
+        envState.windNorth,
+        envState.windEast,
+        envState.windDown
+    );
+}
+
+/// @brief Reads AircraftState from JSBSim
+void Aircraft::readFromJSBSim()
+{
+}
+
+void Aircraft::update(double dt)
+{
+    // read inputs
+    fdm->Run();
+    coypToJSBSim();
+}
+
+/// @brief Returns the altitude
+/// @return 
+double Aircraft::getAltitude()
+{
+    return aircraftState.altitude;
 }
 
 /// @brief Initializes the pointers for the subsystes

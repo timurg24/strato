@@ -55,18 +55,21 @@ class Aircraft {
 public:
     Aircraft() = default;
     void init(const std::filesystem::path& aircraftFolder, const std::string& aircraftFileName, const StartupState& state, Wrangler::Renderer& renderer, Wrangler::AssetManager& assets);
-    void readInputs();
+    void coypToJSBSim();
+    void readFromJSBSim();
     void update(double dt);
     
+    double getAltitude();
+
     Wrangler::RenderableEntity entity;
     
     std::string registration;
 private:
-
+    
     // =================
     //      JSBSim
     // =================
-
+    
     std::unique_ptr<JSBSim::FGFDMExec>          fdm; // jsb sims instance
     std::shared_ptr<JSBSim::FGInitialCondition> startupConditions; // startup conditions, duh
     bool needTrim;
@@ -87,6 +90,7 @@ private:
     AircraftState                               aircraftState;
     ControlState                                controlState;
     EnvironmentState                            envState;
+    // TODO: Make env state a reference to some other environment object
 
     // TODO: Follow JSB sim example and add hooks
 
