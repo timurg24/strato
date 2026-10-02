@@ -2,7 +2,7 @@
 
 /**
  * State
- * Has different states (not the USA kind)
+ * Has different states that are used with JSBSim
  */
 
 // wrangler

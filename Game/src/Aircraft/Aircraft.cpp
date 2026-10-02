@@ -282,12 +282,20 @@ void Aircraft::update3DRotation()
     };
 }
 
+void Aircraft::setPhysicsRate(double hz)
+{
+    physicsHz = hz;
+    physicsDt = 1.0 / hz;
+
+    fdm->Setdt(physicsDt);
+}
+
 void Aircraft::update(double dt)
 {
-    // read inputs
-    fdm->Run();
     coypToJSBSim();
+    fdm->Run();
     readFromJSBSim();
+
     update3DRotation();
 }
 
@@ -305,8 +313,7 @@ bool Aircraft::initJSBSystems()
     fdm = std::make_unique<JSBSim::FGFDMExec>();
 
     // simulation rate
-    constexpr double dt = 1.0 / 120.0;
-    fdm->Setdt(dt);
+    fdm->Setdt(physicsDt);
 
     atmosphere      = fdm->GetAtmosphere();
     winds           = fdm->GetWinds();

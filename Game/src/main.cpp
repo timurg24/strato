@@ -15,10 +15,6 @@ int height = 1080;
 int main(int argc, char** argv) {
     tul::SetupArguments(argc, argv);
 
-    //=============
-    // Application
-    //=============
-
     Wrangler::ApplicationParameters appParams = {
         .title = "Flight Simulator",
         .width = width,
@@ -27,10 +23,6 @@ int main(int argc, char** argv) {
     };
 
     Wrangler::Application app(appParams);
-
-    //=============
-    //  Renderer
-    //=============
 
     Wrangler::RendererParameters rendererParams = {
         .assets = app.assets,
