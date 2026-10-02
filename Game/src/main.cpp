@@ -2,10 +2,14 @@
 #include <Wrangler/Core/Application.hpp>
 #include <Wrangler/Renderer/Renderer.hpp>
 
+// std
+#include <chrono>
+
 // TUL
 #include <tul/CliOps.hpp>
 #include <tul/ErrorOps.hpp>
 
+// Strato
 #include "Aircraft/Aircraft.hpp"
 
 // globals
@@ -90,12 +94,47 @@ int main(int argc, char** argv) {
 
     params.pointLightCount = 0;
 
-    // todo: make jsbsim run on a fixed physics timestep
+    using Clock = std::chrono::steady_clock;
+
+    constexpr double maxFrameTime = 0.25;
+    constexpr int maxPhysicsSteps = 16;
+
+    double accumulator = 0.0;
+
+    auto previousTime = Clock::now();
 
     while(app.running()) {
+
+        // measure
+        const auto currentTime = Clock::now();
+
+        double frameDt =
+            std::chrono::duration<double>(
+                currentTime - previousTime
+            ).count();
+        
+        previousTime = currentTime;
+
+        if(frameDt > maxFrameTime) frameDt = maxFrameTime;
+
+        accumulator += frameDt;
+
         app.pollEvents();
 
-        cessna.update(1.0 / 120.0);
+        // fixed step physics
+        int physicsSteps = 0;
+
+        while(accumulator >= cessna.physicsDt && physicsSteps < maxPhysicsSteps) {
+            cessna.update();
+            accumulator -= cessna.physicsDt;
+            ++physicsSteps;
+        }
+        
+        if (physicsSteps == maxPhysicsSteps)
+        {
+            accumulator = 0.0;
+        }
+
 
         bgfx::setViewClear(
             0,

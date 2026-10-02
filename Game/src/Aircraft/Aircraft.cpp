@@ -290,7 +290,7 @@ void Aircraft::setPhysicsRate(double hz)
     fdm->Setdt(physicsDt);
 }
 
-void Aircraft::update(double dt)
+void Aircraft::update()
 {
     coypToJSBSim();
     fdm->Run();

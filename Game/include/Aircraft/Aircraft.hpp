@@ -58,7 +58,7 @@ public:
     
     // public update
     void setPhysicsRate(double hz);
-    void update(double dt);
+    void update();
     double getAltitude();
 
     Wrangler::RenderableEntity entity;
@@ -88,11 +88,11 @@ public:
     std::shared_ptr<JSBSim::FGAccelerations>    accelerations;
 
     // TODO: Make env state a reference to some other environment object
-private:
 
     // data
     double physicsHz    = 120.0;
     double physicsDt    = 1.0 / physicsHz;
+private:
 
     // initializers
     bool initJSBSystems();
