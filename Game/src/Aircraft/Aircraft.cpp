@@ -184,17 +184,68 @@ void Aircraft::coypToJSBSim()
 /// @brief Reads AircraftState from JSBSim
 void Aircraft::readFromJSBSim()
 {
-    aircraftState.roll =
-        propagate->GetEuler(JSBSim::FGJSBBase::ePhi);
+    // altitude
+    aircraftState.altitudeASL = propagate->GetAltitudeASL();
+    aircraftState.altitudeAGL = propagate->GetDistanceAGL();
 
-    aircraftState.pitch =
-        propagate->GetEuler(JSBSim::FGJSBBase::eTht);
+    // euler
+    aircraftState.eulerRates = {
+        propagate->GetEuler(JSBSim::FGJSBBase::ePhi),
+        propagate->GetEuler(JSBSim::FGJSBBase::eTht),
+        propagate->GetEuler(JSBSim::FGJSBBase::ePsi)
+    };
 
-    aircraftState.heading =
-        propagate->GetEuler(JSBSim::FGJSBBase::ePsi);
+    // velocity
+    aircraftState.velocityLocal = {
+        propagate->GetVel(JSBSim::FGJSBBase::eNorth),
+        propagate->GetVel(JSBSim::FGJSBBase::eEast),
+        propagate->GetVel(JSBSim::FGJSBBase::eDown)
+    };
 
-    aircraftState.altitude =
-        propagate->GetAltitudeASL();
+    aircraftState.velocityBody = {
+        propagate->GetPQR(JSBSim::FGJSBBase::eP),
+        propagate->GetPQR(JSBSim::FGJSBBase::eQ),
+        propagate->GetPQR(JSBSim::FGJSBBase::eR)
+    };
+
+    // air data
+    aircraftState.trueAirspeed = aux->GetVtrueKTS();
+    aircraftState.equivalentAirspeed = aux->GetVequivalentKTS();
+    aircraftState.calibratedAirspeed = aux->GetVcalibratedKTS();
+    aircraftState.groundSpeed = aux->GetVground();
+    aircraftState.mach = aux->GetMach();
+
+    aircraftState.angleOfAttack = aux->Getalpha();
+    aircraftState.sideslip = aux->Getbeta();
+    aircraftState.flightPathAngle = aux->GetGamma();
+
+    aircraftState.loadFactor = aux->GetNlf();
+
+    // accelerations
+    aircraftState.accelsBody = {
+        accelerations->GetBodyAccel(1),
+        accelerations->GetBodyAccel(2),
+        accelerations->GetBodyAccel(3)
+    };
+
+    aircraftState.accelsCgBodyN = {
+        aux->GetNcg(1),
+        aux->GetNcg(2),
+        aux->GetNcg(3)
+    };
+
+    aircraftState.accelsPilotBody = {
+        aux->GetPilotAccel(1),
+        aux->GetPilotAccel(2),
+        aux->GetPilotAccel(3)
+    };
+
+    // cg
+    aircraftState.cgPosition = {
+        massBalance->GetXYZcg(1),
+        massBalance->GetXYZcg(2),
+        massBalance->GetXYZcg(3)
+    };
 }
 
 /// @brief Sets the RenderEntity rotation to that of data from JSBSim
@@ -220,7 +271,7 @@ void Aircraft::update(double dt)
 /// @return 
 double Aircraft::getAltitude()
 {
-    return aircraftState.altitude;
+    return aircraftState.altitudeASL;
 }
 
 /// @brief Initializes the pointers for the subsystes
@@ -278,8 +329,8 @@ bool Aircraft::setupStartupState(const StartupState& state)
     // SET THE STATE
     aircraftState.latitude  = state.latitude;
     aircraftState.longitude = state.longitude;
-    aircraftState.altitude  = state.altitude;
-    aircraftState.airspeed  = state.airspeed;
+    aircraftState.altitudeASL  = state.altitude;
+    aircraftState.trueAirspeed  = state.airspeed;
     registration            = state.registration;
 
     // FUEL THE AIRCRAFT
@@ -307,11 +358,11 @@ bool Aircraft::setupStartupState(const StartupState& state)
     );
 
     startupConditions->SetAltitudeASLFtIC(
-        aircraftState.altitude
+        aircraftState.altitudeASL
     );
 
     startupConditions->SetVtrueKtsIC(
-        aircraftState.airspeed
+        aircraftState.trueAirspeed
     );
 
     return fdm->RunIC();

@@ -17,6 +17,9 @@
 // limits
 #define STRATO_MAX_ENGINES 10
 
+struct FlightVec3 {
+    double x,y,z;
+};
 // What the aircraft is doing now
 // No user inputs go into here
 struct AircraftState {
@@ -94,12 +97,6 @@ struct AircraftState {
 
     // U / V / W aircraft body axes
     Wrangler::Vec3 velocityBody{};
-
-    // North / East / Up-style version used by FlightGear HUD
-    Wrangler::Vec3 velocityGround{};
-
-    // Angular velocity P / Q / R
-    Wrangler::Vec3 omegaBody{};
 
 
     // =========================
