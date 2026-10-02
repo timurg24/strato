@@ -59,6 +59,8 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
     initJSBSystems();
     loadFlightModels(aircraftFolder, aircraftFileName);
     if(!setupStartupState(state)) tul::FatalError({"Failed to set a startup state for aircraft"});
+
+
     
     tul::Print({"[Liberty] [Aircraft] Loaded aircraft: ", aircraftFileName, "\n"});
     int engineCount = propulsion->GetNumEngines();
@@ -71,6 +73,10 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
     // pitch trim
     controlState.pitchTrim = fcs->GetPitchTrimCmd(); // TODO: Review what changes this makes
     controlState.engineCount = propulsion->GetNumEngines();
+    if(controlState.engineCount > STRATO_MAX_ENGINES) {
+        controlState.engineCount = STRATO_MAX_ENGINES;
+        tul::Alert({"Engine count (", std::to_string(controlState.engineCount), ") exceeds max limit of ", std::to_string(STRATO_MAX_ENGINES), " engines"});
+    }
 
     // load 3d
     Wrangler::AssetID model = assets.loadModel("models/Cessna172.fbx");
