@@ -206,7 +206,7 @@ struct ControlState {
     UnsignedNormal  leftBrake               = 0.0;
     UnsignedNormal  rightBrake              = 0.0;
 
-    bool            gear                    = false; // true is up
+    bool            gearUp                  = false; // true is up
 
     int engineCount;
     std::array<EngineState, STRATO_MAX_ENGINES> engines;

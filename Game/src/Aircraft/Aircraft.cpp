@@ -110,7 +110,7 @@ void Aircraft::coypToJSBSim()
     fcs->SetCBrake(0.0); // why
 
     // gear
-    fcs->SetGearCmd(controlState.gear ? 1.0 : 0.0);
+    fcs->SetGearCmd(controlState.gearUp ? 0.0 : 1.0);
 
     // engine
     for(int i = 0; i < controlState.engineCount; i++) {
