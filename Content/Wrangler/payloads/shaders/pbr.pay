@@ -1,0 +1,32 @@
+{
+    "type": "Wrangler Payload",
+    "content": "Shader",
+    "version": 1,
+    "payload": {
+        "name": "pbr",
+        "vertex": "binary/shader/vert.pbr.bin",
+        "fragment": "binary/shader/frag.pbr.bin",
+        "uniforms": [
+            {
+                "name": "u_textureAlbedo",
+                "type": "sampler"
+            },
+            {
+                "name": "u_textureNormal",
+                "type": "sampler"
+            },
+            {
+                "name": "u_textureMetallic",
+                "type": "sampler"
+            },
+            {
+                "name": "u_textureRoughness",
+                "type": "sampler"
+            },
+            {
+                "name": "u_textureAO",
+                "type": "sampler"
+            }
+        ]
+    }
+}

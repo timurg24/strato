@@ -1,0 +1,41 @@
+{
+    "type": "Wrangler Payload",
+    "content": "Material",
+    "version": 1,
+    "payload": {
+        "name": "Cessna",
+        "shader": "pbr",
+        "uniforms": [
+            {
+                "name": "u_textureAlbedo",
+                "type": "sampler",
+                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+            },
+            {
+                "name": "u_textureNormal",
+                "type": "sampler",
+                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+            },
+            {
+                "name": "u_textureMetallic",
+                "type": "sampler",
+                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+            },
+            {
+                "name": "u_textureRoughness",
+                "type": "sampler",
+                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+            },
+            {
+                "name": "u_textureAO",
+                "type": "sampler",
+                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+            },
+            {
+                "name": "u_baseColor",
+                "type": "vec4",
+                "data": [1.0, 1.0, 1.0, 1.0]
+            }
+        ]
+    }
+}

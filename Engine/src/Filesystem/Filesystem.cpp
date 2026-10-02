@@ -18,7 +18,7 @@ Wrangler::Filesystem::Filesystem(const char *argv0, const std::filesystem::path&
 
 /// @brief Initializes the Filesystem
 /// @param argv argv[0] from the main function
-/// @param contentPath Path to your game file (eg gamefiles/game.pak)
+/// @param contentPath Path to your game file (eg gamefiles/game)
 /// @note Crashes on failure and displays an error message+
 void Wrangler::Filesystem::init(const char *argv0, const std::filesystem::path& contentPath)
 {
@@ -34,7 +34,7 @@ void Wrangler::Filesystem::init(const char *argv0, const std::filesystem::path& 
     tul::Print({"[Filesystem] PhyFS initialized\n"});
 
     std::filesystem::path engineContent =
-        contentDir / "Wrangler - Assets.pak";
+        contentDir / "Wrangler";
     if (!PHYSFS_mount(engineContent.string().c_str(), nullptr, 1))
     {
         tul::FatalError({

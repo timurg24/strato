@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
         .title = "Flight Simulator",
         .width = width,
         .height = height,
-        .archivePath = "../Content/Flight Simulator - Assets.pak"
+        .archivePath = "../Content/Strato"
     };
 
     Wrangler::Application app(appParams);
