@@ -165,5 +165,5 @@ void Wrangler::Material::loadPayload(AssetManager& assets, const Payload& payloa
         uniformData.push_back(result);
     }
 
-    tul::Print({"[Material] Loaded a material [", materialName, "]"});
+    tul::Print({"[Material] Loaded a material [", materialName, "]\n"});
 }

@@ -1,5 +1,9 @@
 #include "Aircraft/Aircraft.hpp"
 
+// debug hud
+#include <bgfx/bgfx.h>
+#include <numbers>
+
 // JSBSim
 #include <FGJSBBase.h>
 
@@ -69,7 +73,7 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
     entity = {
         .model = model,
         .material = material,
-        .position = {1.0f, -200.0f, 500.0f}
+        .position = {0.0f, 0.0f, 0.0f}
     };   
 }
 
@@ -304,6 +308,182 @@ void Aircraft::update()
 double Aircraft::getAltitude()
 {
     return aircraftState.altitudeASL;
+}
+
+/// @brief Displays some information using the BGFX debug text function
+void Aircraft::drawDebugHUD() const
+{
+    constexpr double RAD_TO_DEG =
+        180.0 / std::numbers::pi;
+
+    constexpr double FPS_TO_KTS =
+        0.592483801;
+
+    constexpr double FPS_TO_FPM =
+        60.0;
+
+    const double rollDeg =
+        aircraftState.roll * RAD_TO_DEG;
+
+    const double pitchDeg =
+        aircraftState.pitch * RAD_TO_DEG;
+
+    const double headingDeg =
+        aircraftState.heading * RAD_TO_DEG;
+
+    const double groundSpeedKts =
+        aircraftState.groundSpeedFps * FPS_TO_KTS;
+
+    const double verticalSpeedFpm =
+        aircraftState.climbRate * FPS_TO_FPM;
+
+    bgfx::dbgTextClear();
+
+    // -----------------------------------------------------
+    // Flight data
+    // -----------------------------------------------------
+
+    bgfx::dbgTextPrintf(
+        0, 0, 0x0f,
+        "=== STRATO DEBUG ==="
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 2, 0x0f,
+        "Altitude ASL : %8.1f ft",
+        aircraftState.altitudeASL
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 3, 0x0f,
+        "Altitude AGL : %8.1f ft",
+        aircraftState.altitudeAGL
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 4, 0x0f,
+        "Vertical Spd : %+8.1f fpm",
+        verticalSpeedFpm
+    );
+
+
+    // -----------------------------------------------------
+    // Airspeed
+    // -----------------------------------------------------
+
+    bgfx::dbgTextPrintf(
+        0, 6, 0x0f,
+        "IAS / CAS    : %8.1f kt",
+        aircraftState.calibratedAirspeedKts
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 7, 0x0f,
+        "TAS          : %8.1f kt",
+        aircraftState.trueAirspeedKts
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 8, 0x0f,
+        "EAS          : %8.1f kt",
+        aircraftState.equivalentAirspeedKts
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 9, 0x0f,
+        "Ground Speed : %8.1f kt",
+        groundSpeedKts
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 10, 0x0f,
+        "Mach         : %8.3f",
+        aircraftState.mach
+    );
+
+
+    // -----------------------------------------------------
+    // Attitude
+    // -----------------------------------------------------
+
+    bgfx::dbgTextPrintf(
+        0, 12, 0x0f,
+        "Pitch        : %+8.2f deg",
+        pitchDeg
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 13, 0x0f,
+        "Roll         : %+8.2f deg",
+        rollDeg
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 14, 0x0f,
+        "Heading      : %8.2f deg",
+        headingDeg
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 15, 0x0f,
+        "AoA          : %+8.2f deg",
+        aircraftState.angleOfAttack * RAD_TO_DEG
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 16, 0x0f,
+        "Sideslip     : %+8.2f deg",
+        aircraftState.sideslip * RAD_TO_DEG
+    );
+
+
+    // -----------------------------------------------------
+    // Controls
+    // -----------------------------------------------------
+
+    bgfx::dbgTextPrintf(
+        0, 18, 0x0f,
+        "Aileron Cmd  : %+8.3f",
+        controlState.aileron
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 19, 0x0f,
+        "Elevator Cmd : %+8.3f",
+        controlState.elevator
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 20, 0x0f,
+        "Rudder Cmd   : %+8.3f",
+        controlState.rudder
+    );
+
+    bgfx::dbgTextPrintf(
+        0, 21, 0x0f,
+        "Pitch Trim   : %+8.3f",
+        controlState.pitchTrim
+    );
+
+
+    // -----------------------------------------------------
+    // Engine 1
+    // -----------------------------------------------------
+
+    if (controlState.engineCount > 0)
+    {
+        bgfx::dbgTextPrintf(
+            0, 23, 0x0f,
+            "Throttle #1  : %8.1f%%",
+            controlState.engines[0].throttle * 100.0
+        );
+
+        bgfx::dbgTextPrintf(
+            0, 24, 0x0f,
+            "Mixture #1   : %8.1f%%",
+            controlState.engines[0].mixture * 100.0
+        );
+    }
 }
 
 /// @brief Initializes the pointers for the subsystes

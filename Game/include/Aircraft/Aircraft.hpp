@@ -60,6 +60,7 @@ public:
     void setPhysicsRate(double hz);
     void update();
     double getAltitude();
+    void drawDebugHUD() const;
 
     Wrangler::RenderableEntity entity;
     

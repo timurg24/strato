@@ -39,7 +39,7 @@ namespace Wrangler {
             {
                 bx::cos(pitch) * bx::sin(yaw),
                 bx::sin(pitch),
-                bx::cos(pitch) * bx::cos(yaw)
+                -bx::cos(pitch) * bx::cos(yaw)
             };
 
             // Point the camera is looking at

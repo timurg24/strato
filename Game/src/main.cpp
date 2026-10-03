@@ -53,13 +53,14 @@ int main(int argc, char** argv) {
 
     camera.position = bx::Vec3{
         0.0f,
-        0.0f,
-        -5.0f
+        200.0f,
+        800.0f
     };
 
-    camera.rotation = bx::Vec3{
-        0.0f, // pitch
-        0.0f, // yaw
+    // 180 is facing the aircraft
+    camera.rotation = {
+        bx::toRad(-10.0f),
+        bx::toRad(0.0f),
         0.0f
     };
 
@@ -105,6 +106,7 @@ int main(int argc, char** argv) {
 
     auto previousTime = Clock::now();
 
+    bgfx::setDebug(BGFX_DEBUG_TEXT);
     while(app.running()) {
 
         // measure
@@ -157,7 +159,7 @@ int main(int argc, char** argv) {
 
         renderer.renderEntity(cessna.entity, params);
 
-        std::cout << "Altitude: " << cessna.propagate->GetAltitudeASL() << "\n";
+        cessna.drawDebugHUD();
 
         app.swapBuffers();
     }

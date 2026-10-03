@@ -26,16 +26,16 @@ void Input::clampUnsignedNormal(UnsignedNormal& value)
 void Input::keyboardInput(GLFWwindow *window, ControlState& state, double dt)
 {
     // control surfaces
-    if(glfwGetKey(window, GLFW_KEY_A)) state.aileron += state.keyboardControlRate  * dt;
-    if(glfwGetKey(window, GLFW_KEY_D)) state.aileron -= state.keyboardControlRate  * dt ;
+    if(glfwGetKey(window, GLFW_KEY_A)) state.aileron += state.keyboardControlRate  * (dt / 2);
+    if(glfwGetKey(window, GLFW_KEY_D)) state.aileron -= state.keyboardControlRate  * (dt / 2);
     clampSignedNormal(state.aileron);
 
-    if(glfwGetKey(window, GLFW_KEY_W)) state.elevator -= state.keyboardControlRate  * dt ;
-    if(glfwGetKey(window, GLFW_KEY_S)) state.elevator += state.keyboardControlRate  * dt ;
+    if(glfwGetKey(window, GLFW_KEY_W)) state.elevator += state.keyboardControlRate  * dt;
+    if(glfwGetKey(window, GLFW_KEY_S)) state.elevator -= state.keyboardControlRate  * dt;
     clampSignedNormal(state.elevator);
 
-    if(glfwGetKey(window, GLFW_KEY_Q)) state.rudder -= state.keyboardControlRate  * dt ;
-    if(glfwGetKey(window, GLFW_KEY_E)) state.rudder += state.keyboardControlRate  * dt ;
+    if(glfwGetKey(window, GLFW_KEY_Q)) state.rudder -= state.keyboardControlRate  * (dt / 2);
+    if(glfwGetKey(window, GLFW_KEY_E)) state.rudder += state.keyboardControlRate  * (dt / 2);
     clampSignedNormal(state.rudder);
 
     // engine

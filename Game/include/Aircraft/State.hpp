@@ -162,7 +162,7 @@ struct EngineState {
     bool            running         = false;
 
     UnsignedNormal  throttle        = 0.0;
-    UnsignedNormal  mixture         = 0.0;
+    UnsignedNormal  mixture         = 1.0;
     UnsignedNormal  propAdvance     = 0.0;
     UnsignedNormal  feather         = 0.0;
 
