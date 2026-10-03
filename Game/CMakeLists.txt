@@ -2,6 +2,7 @@ add_executable(Strato
     src/main.cpp
 
     src/Aircraft/Aircraft.cpp
+    src/Input/Input.cpp
 )
 
 target_include_directories(Strato

@@ -190,6 +190,9 @@ struct EngineState {
 // What is being commanded
 // User inputs go here
 struct ControlState {
+
+    UnsignedNormal  keyboardControlRate     = 1.1;
+
     // Trim
     bool            enableStartupTrim       = false; // automatically selects the best trim at startup
     bool            trimmed                 = false;

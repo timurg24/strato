@@ -11,6 +11,7 @@
 
 // Strato
 #include "Aircraft/Aircraft.hpp"
+#include "Input/Input.hpp"
 
 // globals
 int width = 1920;
@@ -91,6 +92,8 @@ int main(int argc, char** argv) {
         1.0f
     };
 
+    Input input;
+
     params.pointLightCount = 0;
 
     using Clock = std::chrono::steady_clock;
@@ -124,6 +127,7 @@ int main(int argc, char** argv) {
         int physicsSteps = 0;
 
         while(accumulator >= cessna.physicsDt && physicsSteps < maxPhysicsSteps) {
+            input.keyboardInput(app.window, cessna.controlState, cessna.physicsDt);
             cessna.update();
             accumulator -= cessna.physicsDt;
             ++physicsSteps;

@@ -26,11 +26,10 @@ namespace Wrangler {
 
     class Application {
     private:
-        GLFWwindow* window = nullptr;
-
         int width, height;
     public:
-
+    
+        GLFWwindow* window = nullptr;
         Filesystem fs;
         AssetManager assets;
 
