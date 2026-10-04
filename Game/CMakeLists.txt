@@ -34,3 +34,25 @@ target_link_libraries(Strato
         Wrangler
         libJSBSim
 )
+
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
+add_dependencies(Strato shaderc)
+
+add_custom_target(
+    cook_content ALL
+
+    COMMAND
+        ${Python3_EXECUTABLE}
+        ${CMAKE_SOURCE_DIR}/Tools/scripts/cook.py
+        ${CMAKE_SOURCE_DIR}/Content
+        ${CMAKE_BINARY_DIR}
+        $<TARGET_FILE_DIR:Strato>
+
+    DEPENDS
+        Strato
+        shaderc
+
+    COMMENT "Cooking Wrangler content..."
+    VERBATIM
+)

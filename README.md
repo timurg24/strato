@@ -6,7 +6,7 @@ Open source flight simulator powered by JSBSim
 
 - `Engine` - Engine core (Wrangler)
 - `Game` - Strato Flight Simulator code
-- `Content` - Strato Flight Simulator content (including Game and Engine packages)
+- `Content` - Strato and Aircraft source content (like the `Working` directory in Chisel)
 - `thirdparty` - Third party libraries
 
 ## Requirements
@@ -18,4 +18,3 @@ Open source flight simulator powered by JSBSim
 
 - Update/install submodules using `git submodule update --init --recursive`
 - Generate your CMake project and compile as normal
-- Compile `shaderc` using `cmake --build build --target shaderc` (if using developing shaders)

@@ -9,27 +9,27 @@
             {
                 "name": "u_textureAlbedo",
                 "type": "sampler",
-                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+                "data": "Aircraft/Cessna 172P Skyhawk/assets/Textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
             },
             {
                 "name": "u_textureNormal",
                 "type": "sampler",
-                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+                "data": "Aircraft/Cessna 172P Skyhawk/assets/Textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
             },
             {
                 "name": "u_textureMetallic",
                 "type": "sampler",
-                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+                "data": "Aircraft/Cessna 172P Skyhawk/assets/Textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
             },
             {
                 "name": "u_textureRoughness",
                 "type": "sampler",
-                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+                "data": "Aircraft/Cessna 172P Skyhawk/assets/Textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
             },
             {
                 "name": "u_textureAO",
                 "type": "sampler",
-                "data": "textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
+                "data": "Aircraft/Cessna 172P Skyhawk/assets/Textures/75e98ffbcac54affb13a722995346594_RGB_Cessn.png"
             },
             {
                 "name": "u_baseColor",

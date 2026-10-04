@@ -33,17 +33,17 @@ void Wrangler::Filesystem::init(const char *argv0, const std::filesystem::path& 
         });
     tul::Print({"[Filesystem] PhyFS initialized\n"});
 
-    std::filesystem::path engineContent =
-        contentDir / "Wrangler";
-    if (!PHYSFS_mount(engineContent.string().c_str(), nullptr, 1))
-    {
-        tul::FatalError({
-            "Failed to mount engine content: ",
-            engineContent.string().c_str(),
-            "\nPhysFS Error: ",
-            PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())
-        });
-    } else tul::Print({"[Filesystem] Mounted engine content\n"});
+    // std::filesystem::path engineContent =
+    //     contentDir / "Wrangler";
+    // if (!PHYSFS_mount(engineContent.string().c_str(), nullptr, 1))
+    // {
+    //     tul::FatalError({
+    //         "Failed to mount engine content: ",
+    //         engineContent.string().c_str(),
+    //         "\nPhysFS Error: ",
+    //         PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())
+    //     });
+    // } else tul::Print({"[Filesystem] Mounted engine content\n"});
 
 
     if (!PHYSFS_mount(contentPath.string().c_str(), nullptr, 1))

@@ -66,8 +66,8 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
     }
 
     // load 3d
-    Wrangler::AssetID model = assets.loadModel("models/Cessna172.fbx");
-    Wrangler::AssetID material = assets.loadMaterial("payloads/materials/cessna.pay", renderer.pbrShader);
+    Wrangler::AssetID model = assets.loadModel((aircraftFolder / "assets" / "Models" / "Cessna172.fbx").generic_string());
+    Wrangler::AssetID material = assets.loadMaterial((aircraftFolder / "assets" / "Materials" / "cessna.pay").generic_string(), renderer.pbrShader);
 
     // setup 3d
     entity = {
@@ -513,21 +513,28 @@ bool Aircraft::initJSBSystems()
 
 /// @brief Loads the required flight model files
 /// @return True on success
-bool Aircraft::loadFlightModels(const std::filesystem::path& aircraftFolder, const std::string& aircraftFileName)
+bool Aircraft::loadFlightModels(
+    const std::filesystem::path& aircraftFolder,
+    const std::string& aircraftFileName)
 {
-    std::filesystem::path aircraftRootFolder = aircraftFolder.filename();
-    fdm->SetRootDir(SGPath(aircraftFolder.parent_path()));
-    fdm->SetAircraftPath(SGPath(aircraftRootFolder));
-    fdm->SetEnginePath(SGPath(aircraftRootFolder / "engine"));
-    fdm->SetSystemsPath(SGPath(aircraftRootFolder / "systems"));
+    const auto folder =
+        std::filesystem::absolute(
+            std::filesystem::path("Content") / aircraftFolder
+        ).lexically_normal();
 
-    if(!fdm->LoadModel(aircraftFileName, false))
+    fdm->SetAircraftPath(SGPath(folder));
+    fdm->SetEnginePath(SGPath(folder / "engine"));
+    fdm->SetSystemsPath(SGPath(folder / "systems"));
+
+    if (!fdm->LoadModel(aircraftFileName, false))
+    {
         tul::FatalError({
-                        "Failed to load aircraft!\nAircraft Folder: ", 
-                        aircraftFolder.string(), 
-                        "\nFile Name: ", 
-                        aircraftFileName,
-                        "\nCheck console for details"});
+            "Failed to load aircraft!\n",
+            "Aircraft Folder: ", folder.string(),
+            "\nFile Name: ", aircraftFileName,
+            "\nCheck console for details"
+        });
+    }
 
     return true;
 }

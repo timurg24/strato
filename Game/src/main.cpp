@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
     tul::SetupArguments(argc, argv);
 
     Wrangler::ApplicationParameters appParams = {
-        .title = "Flight Simulator",
+        .title = "Strato Flight Simulator",
         .width = width,
         .height = height,
-        .archivePath = "../Content/Strato"
+        .archivePath = "Content"
     };
 
     Wrangler::Application app(appParams);
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
         .fs = app.fs,
         .width = width,
         .height = height,
-        .pbrShaderPath = "payloads/shaders/pbr.pay"
+        .pbrShaderPath = "Shaders/pbr/pbr.pay"
     };
 
     Wrangler::Renderer renderer(rendererParams);
@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     StartupState startup = {};
     Aircraft cessna;
     cessna.init(
-        "../Content/Aircraft/Cessna 172P Skyhawk", "c172p", 
+        "Aircraft/Cessna 172P Skyhawk", "c172p", 
         startup,
         renderer,
         app.assets);
