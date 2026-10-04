@@ -16,6 +16,12 @@
 
 namespace Wrangler {
 
+    struct Pipeline {
+        Shader* shadowShader = nullptr;
+        Shader* sceneShader = nullptr;
+        Shader* postProcessShader = nullptr;
+    };
+
     struct RenderableEntity {
         AssetID model;
         AssetID material;

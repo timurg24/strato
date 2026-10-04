@@ -1,6 +1,7 @@
 add_executable(Strato
     src/main.cpp
 
+    src/Game/Game.cpp
     src/Aircraft/Aircraft.cpp
     src/Input/Input.cpp
 )

@@ -1,17 +1,4 @@
-// Wrangler
-#include <Wrangler/Core/Application.hpp>
-#include <Wrangler/Renderer/Renderer.hpp>
-
-// std
-#include <chrono>
-
-// TUL
-#include <tul/CliOps.hpp>
-#include <tul/ErrorOps.hpp>
-
-// Strato
-#include "Aircraft/Aircraft.hpp"
-#include "Input/Input.hpp"
+#include "Game/Game.hpp"
 
 // globals
 int width = 1920;
@@ -20,33 +7,15 @@ int height = 1080;
 int main(int argc, char** argv) {
     tul::SetupArguments(argc, argv);
 
-    Wrangler::ApplicationParameters appParams = {
-        .title = "Strato Flight Simulator",
-        .width = width,
-        .height = height,
-        .archivePath = "Content"
-    };
-
-    Wrangler::Application app(appParams);
-
-    Wrangler::RendererParameters rendererParams = {
-        .assets = app.assets,
-        .fs = app.fs,
-        .width = width,
-        .height = height,
-        .pbrShaderPath = "Shaders/pbr/pbr.pay"
-    };
-
-    Wrangler::Renderer renderer(rendererParams);
+    StratoGame game({width, height});
 
     // Flight
     StartupState startup = {};
-    Aircraft cessna;
-    cessna.init(
+    game.aircraft.init(
         "Aircraft/Cessna 172P Skyhawk", "c172p", 
         startup,
-        renderer,
-        app.assets);
+        game.renderer,
+        game.app.assets);
 
     // Camera
     Wrangler::Camera camera;
@@ -107,7 +76,7 @@ int main(int argc, char** argv) {
     auto previousTime = Clock::now();
 
     bgfx::setDebug(BGFX_DEBUG_TEXT);
-    while(app.running()) {
+    while(game.app.running()) {
 
         // measure
         const auto currentTime = Clock::now();
@@ -123,15 +92,15 @@ int main(int argc, char** argv) {
 
         accumulator += frameDt;
 
-        app.pollEvents();
+        game.app.pollEvents();
 
         // fixed step physics
         int physicsSteps = 0;
 
-        while(accumulator >= cessna.physicsDt && physicsSteps < maxPhysicsSteps) {
-            input.keyboardInput(app.window, cessna.controlState, cessna.physicsDt);
-            cessna.update();
-            accumulator -= cessna.physicsDt;
+        while(accumulator >= game.aircraft.physicsDt && physicsSteps < maxPhysicsSteps) {
+            input.keyboardInput(game.app.window, game.aircraft.controlState, game.aircraft.physicsDt);
+            game.aircraft.update();
+            accumulator -= game.aircraft.physicsDt;
             ++physicsSteps;
         }
         
@@ -150,17 +119,17 @@ int main(int argc, char** argv) {
             0
         );
 
-        renderer.begin(camera);
+        game.renderer.begin(camera);
 
         camera.updateValues(
             width,
             height
         );
 
-        renderer.renderEntity(cessna.entity, params);
+        game.renderer.renderEntity(game.aircraft.entity, params);
 
-        cessna.drawDebugHUD();
+        game.aircraft.drawDebugHUD();
 
-        app.swapBuffers();
+        game.app.swapBuffers();
     }
 }
