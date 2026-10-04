@@ -8,11 +8,26 @@
 
 constexpr bgfx::ViewId VIEW_ID = 0;
 
-Wrangler::Renderer::Renderer(const RendererParameters& params): 
-    assets(params.assets),
-    fs(params.fs),
-    width(params.width),
-    height(params.height)
+void Wrangler::Renderer::loadShaderFromPath(const std::string &path, Shader &target)
+{
+    Payload payload;
+    payload.read(fs.readFile(path).asString());
+
+    std::string vertexPath = payload.content["vertex"].get<std::string>();
+    std::string fragmentPath = payload.content["fragment"].get<std::string>();
+
+    std::vector<byte> vertexData = fs.readFile(vertexPath).asBinary();
+    std::vector<byte> fragmentData = fs.readFile(fragmentPath).asBinary();
+
+    target.init(vertexData, fragmentData, payload);
+
+    if(!bgfx::isValid(target.program)) tul::FatalError({"Failed to create shader program: ", path});
+}
+
+Wrangler::Renderer::Renderer(const RendererParameters &params) : assets(params.assets),
+                                                                 fs(params.fs),
+                                                                 width(params.width),
+                                                                 height(params.height)
 {
 
     bgfx::setViewClear(
@@ -36,21 +51,40 @@ Wrangler::Renderer::Renderer(const RendererParameters& params):
     
 
     // load pbr shader
-    Payload pbrShaderPayload;
-    pbrShaderPayload.read(fs.readFile(params.pbrShaderPath).asString());
+    if (!params.shadowShaderPath.empty())
+    {
+        mainPipeline.shadowShader =
+            std::make_unique<Shader>();
 
-    std::string vertexPath = pbrShaderPayload.content["vertex"].get<std::string>();
-    std::string fragmentPath = pbrShaderPayload.content["fragment"].get<std::string>();
+        loadShaderFromPath(
+            params.shadowShaderPath,
+            *mainPipeline.shadowShader
+        );
+    }
 
-    std::vector<byte> vertexData = fs.readFile(vertexPath).asBinary();
-    std::vector<byte> fragmentData = fs.readFile(fragmentPath).asBinary();
+    if (!params.sceneShaderPath.empty())
+    {
+        mainPipeline.sceneShader =
+            std::make_unique<Shader>();
 
-    pbrShader.init(vertexData, fragmentData, pbrShaderPayload);
+        loadShaderFromPath(
+            params.sceneShaderPath,
+            *mainPipeline.sceneShader
+        );
+    }
 
-    if(!bgfx::isValid(pbrShader.program)) tul::FatalError({"Failed to create shader program"});
+    if (!params.postProcessShaderPath.empty())
+    {
+        mainPipeline.postProcessShader =
+            std::make_unique<Shader>();
 
+        loadShaderFromPath(
+            params.postProcessShaderPath,
+            *mainPipeline.postProcessShader
+        );
+    }
     // set pbr shader uniforms
-    pbrShader.createUniform("u_baseColor", bgfx::UniformType::Vec4, 1);
+    mainPipeline.sceneShader->createUniform("u_baseColor", bgfx::UniformType::Vec4, 1);
 
 }
 
@@ -82,7 +116,8 @@ void Wrangler::Renderer::renderEntity(const RenderableEntity& entity, const Shad
     ShaderSceneParameters newParams = params;
     newParams.cameraPosition = camera->position;
     
-    pbrShader.setGlobalUniforms(newParams);
+    // SCENE SHADER
+    mainPipeline.sceneShader->setGlobalUniforms(newParams);
 
     const auto model =
         assets.getModel(entity.model);
@@ -128,22 +163,22 @@ void Wrangler::Renderer::renderEntity(const RenderableEntity& entity, const Shad
             switch (uniform.type)
             {
                 case bgfx::UniformType::Vec4:
-                    pbrShader.setUniform(uniform.name, uniform.vector4);
+                    mainPipeline.sceneShader->setUniform(uniform.name, uniform.vector4);
                     break;
 
                 case bgfx::UniformType::Mat3:
-                    pbrShader.setUniform(uniform.name, uniform.mat3);
+                    mainPipeline.sceneShader->setUniform(uniform.name, uniform.mat3);
                     break;
 
                 case bgfx::UniformType::Mat4:
-                    pbrShader.setUniform(uniform.name, uniform.mat4);
+                    mainPipeline.sceneShader->setUniform(uniform.name, uniform.mat4);
                     break;
 
                 case bgfx::UniformType::Sampler:
                 {
                     const auto texture = assets.getTexture(uniform.sampler);
 
-                    pbrShader.setTexture(
+                    mainPipeline.sceneShader->setTexture(
                         uniform.name,
                         textureStage,
                         texture->handle()
@@ -182,7 +217,7 @@ void Wrangler::Renderer::renderEntity(const RenderableEntity& entity, const Shad
 
         bgfx::submit(
             0,
-            pbrShader.handle()
+            mainPipeline.sceneShader->handle()
         );
     }
 }
@@ -192,3 +227,5 @@ void Wrangler::Renderer::end()
 {
     camera = nullptr;
 }
+
+Wrangler::Renderer::~Renderer() {}

@@ -67,7 +67,7 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
 
     // load 3d
     Wrangler::AssetID model = assets.loadModel((aircraftFolder / "assets" / "Models" / "Cessna172.fbx").generic_string());
-    Wrangler::AssetID material = assets.loadMaterial((aircraftFolder / "assets" / "Materials" / "cessna.pay").generic_string(), renderer.pbrShader);
+    Wrangler::AssetID material = assets.loadMaterial((aircraftFolder / "assets" / "Materials" / "cessna.pay").generic_string(), *renderer.mainPipeline.sceneShader);
 
     // setup 3d
     entity = {

@@ -12,7 +12,7 @@ StratoGame::StratoGame(Settings settings):
         .fs = app.fs,
         .width = settings.width,
         .height = settings.height,
-        .pbrShaderPath = "Shaders/pbr/pbr.pay"
+        .sceneShaderPath = "Shaders/pbr/pbr.pay"
     })
 {
 

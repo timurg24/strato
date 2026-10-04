@@ -17,9 +17,9 @@
 namespace Wrangler {
 
     struct Pipeline {
-        Shader* shadowShader = nullptr;
-        Shader* sceneShader = nullptr;
-        Shader* postProcessShader = nullptr;
+        std::unique_ptr<Shader> shadowShader;
+        std::unique_ptr<Shader> sceneShader;
+        std::unique_ptr<Shader> postProcessShader;
     };
 
     struct RenderableEntity {
@@ -32,11 +32,15 @@ namespace Wrangler {
     };
 
     struct RendererParameters {
-        const AssetManager& assets;
+        AssetManager& assets;
         const Filesystem& fs;
+
         int& width;
         int& height;
-        const std::string pbrShaderPath;
+
+        std::string shadowShaderPath;
+        std::string sceneShaderPath;
+        std::string postProcessShaderPath;
     };
 
     class Renderer {
@@ -47,13 +51,16 @@ namespace Wrangler {
         int& height;
         const Camera* camera = nullptr;
         
+        void loadShaderFromPath(const std::string& path, Shader& target);
     public:
-        Shader pbrShader;
+        Pipeline mainPipeline;
         Renderer(const RendererParameters& params);
 
         void begin(const Camera &camera);
         void renderEntity(const RenderableEntity& entity, const ShaderSceneParameters& params);
         void end();
+
+        ~Renderer();
     };
 
 }
