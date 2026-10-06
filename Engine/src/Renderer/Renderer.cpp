@@ -115,9 +115,6 @@ void Wrangler::Renderer::renderEntity(const RenderableEntity& entity, const Shad
 
     ShaderSceneParameters newParams = params;
     newParams.cameraPosition = camera->position;
-    
-    // SCENE SHADER
-    mainPipeline.sceneShader->setGlobalUniforms(newParams);
 
     const auto model =
         assets.getModel(entity.model);
@@ -156,7 +153,8 @@ void Wrangler::Renderer::renderEntity(const RenderableEntity& entity, const Shad
 
     for (const GPUMesh& mesh : model->meshes)
     {
-
+        // SCENE SHADER
+        mainPipeline.sceneShader->setGlobalUniforms(newParams);
         uint8_t textureStage = 0;
         for (const auto& uniform : mat->uniformData)
         {

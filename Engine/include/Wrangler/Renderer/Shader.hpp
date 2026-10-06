@@ -29,10 +29,9 @@ namespace Wrangler {
         bx::Vec3 cameraPosition { 0.0f, 0.0f, 0.0f };
 
         // Sun
-        bx::Vec3 sunDirection { 0.0f, -1.0f, 0.0f };
-        bx::Vec3 sunAmbient   { 0.1f, 0.1f, 0.1f };
-        bx::Vec3 sunDiffuse   { 1.0f, 1.0f, 1.0f };
-        bx::Vec3 sunSpecular  { 1.0f, 1.0f, 1.0f };
+        bx::Vec3 sunDirection   { 0.0f, -1.0f, 0.0f };
+        bx::Vec3 sunColor       { 255.0f, 255.0f, 255.0f };
+        float sunIntensity = 500.0f;
 
         // Point lights
         PointLight pointLights[MAX_LIGHT_COUNT];

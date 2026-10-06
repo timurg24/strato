@@ -39,29 +39,18 @@ int main(int argc, char** argv) {
 
     // Sun
     params.sunDirection = bx::Vec3{
-        -0.6f,
+        -0.2f,
         -1.0f,
-        0.4f
+        0.15f
     };
 
-    params.sunAmbient = bx::Vec3{
+    params.sunColor = bx::Vec3{
         0.15f,
         0.15f,
         0.15f
     };
 
-    params.sunDiffuse = bx::Vec3{
-        1.0f,
-        0.95f,
-        0.85f
-    };
-
-    params.sunSpecular = bx::Vec3{
-        1.0f,
-        1.0f,
-        1.0f
-    };
-
+    params.sunIntensity = 1.0f;
     Input input;
 
     params.pointLightCount = 0;

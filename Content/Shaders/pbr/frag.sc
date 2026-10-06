@@ -4,45 +4,39 @@ $input v_fragPos, v_normal, v_texCoord
 
 uniform vec4 u_baseColor;
 
-// Material texture
 SAMPLER2D(u_textureAlbedo, 0);
 
-// sun
-uniform vec4 sunDirection;
-uniform vec4 sunAmbient;
-uniform vec4 sunDiffuse;
-uniform vec4 sunSpecular;
+// Sun
+uniform vec4 sunDirection; // xyz = direction, w = light count
+uniform vec4 sunColor;     // rgb = color, w = intensity
 
 void main()
 {
-    // Read albedo texture
     vec4 albedoTexture =
         texture2D(u_textureAlbedo, v_texCoord);
 
-    // Combine texture color with material base color
     vec3 albedo =
         albedoTexture.rgb * u_baseColor.rgb;
 
-    // ambient
+    vec3 norm = normalize(v_normal);
+    vec3 lightDir = normalize(-sunDirection.xyz);
+
+    float sunIntensity = sunColor.w;
+
+    // Ambient
     float ambientStrength = 0.1;
 
     vec3 ambient =
-        ambientStrength * sunAmbient.xyz;
+        ambientStrength * sunColor.rgb * sunIntensity;
 
-    // diffuse
-    vec3 norm =
-        normalize(v_normal);
-
+    // Diffuse
     float diff =
-        max(
-            dot(norm, sunDirection.xyz),
-            0.0
-        );
+        max(dot(norm, lightDir), 0.0);
 
     vec3 diffuse =
-        diff * sunDiffuse.xyz;
+        diff * sunColor.rgb * sunIntensity;
 
-    // final color
+    // Final color
     vec3 result =
         (ambient + diffuse) * albedo;
 

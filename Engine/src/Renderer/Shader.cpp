@@ -52,20 +52,16 @@ void Wrangler::Shader::init(const std::vector<byte> &vertexData, const std::vect
     // directional light
     createUniform("sunDirection", bgfx::UniformType::Vec4, 1);
     // w = active light count
-    createUniform("sunAmbient", bgfx::UniformType::Vec4, 1);
-    createUniform("sunDiffuse", bgfx::UniformType::Vec4, 1);
-    createUniform("sunSpecular", bgfx::UniformType::Vec4, 1);
+    createUniform("sunColor", bgfx::UniformType::Vec4, 1);
 
     // point lights
     createUniform("pointPosition", bgfx::UniformType::Vec4, MAX_LIGHT_COUNT);
+
     createUniform("pointMath", bgfx::UniformType::Vec4, MAX_LIGHT_COUNT);
-    // x = constant
-    // y = linear
-    // z = quadratic
-    // w = intensity
-    createUniform("pointAmbient", bgfx::UniformType::Vec4, MAX_LIGHT_COUNT);
-    createUniform("pointDiffuse", bgfx::UniformType::Vec4, MAX_LIGHT_COUNT);
-    createUniform("pointSpecular", bgfx::UniformType::Vec4, MAX_LIGHT_COUNT);
+    // x = range
+    // y = intensity
+
+    createUniform("pointColor", bgfx::UniformType::Vec4, MAX_LIGHT_COUNT);
 
     //=======================
     //   Payload Uniforms
@@ -195,38 +191,20 @@ void Wrangler::Shader::setGlobalUniforms(const ShaderSceneParameters &params)
         static_cast<float>(lightCount)
     };
 
-    const float sunAmbient[4] = {
-        params.sunAmbient.x,
-        params.sunAmbient.y,
-        params.sunAmbient.z,
-        0.0f
-    };
-
-    const float sunDiffuse[4] = {
-        params.sunDiffuse.x,
-        params.sunDiffuse.y,
-        params.sunDiffuse.z,
-        0.0f
-    };
-
-    const float sunSpecular[4] = {
-        params.sunSpecular.x,
-        params.sunSpecular.y,
-        params.sunSpecular.z,
-        0.0f
+    const float sunColor[4] = {
+        params.sunColor.x,
+        params.sunColor.y,
+        params.sunColor.z,
+        params.sunIntensity
     };
 
     setUniform("sunDirection", sunDirection);
-    setUniform("sunAmbient", sunAmbient);
-    setUniform("sunDiffuse", sunDiffuse);
-    setUniform("sunSpecular", sunSpecular);
+    setUniform("sunColor", sunColor);
 
     // Point lights
     float pointPosition[MAX_LIGHT_COUNT][4] = {};
     float pointMath[MAX_LIGHT_COUNT][4] = {};
-    float pointAmbient[MAX_LIGHT_COUNT][4] = {};
-    float pointDiffuse[MAX_LIGHT_COUNT][4] = {};
-    float pointSpecular[MAX_LIGHT_COUNT][4] = {};
+    float pointColor[MAX_LIGHT_COUNT][4] = {};
 
     for(uint16_t i = 0; i < lightCount; ++i)
     {
@@ -236,31 +214,19 @@ void Wrangler::Shader::setGlobalUniforms(const ShaderSceneParameters &params)
         pointPosition[i][1] = light.position.y;
         pointPosition[i][2] = light.position.z;
 
-        pointMath[i][0] = light.constant;
-        pointMath[i][1] = light.linear;
-        pointMath[i][2] = light.quadratic;
-        pointMath[i][3] = light.intensity;
+        pointMath[i][0] = light.range;
+        pointMath[i][1] = light.intensity;
 
-        pointAmbient[i][0] = light.pointAmbient.x;
-        pointAmbient[i][1] = light.pointAmbient.y;
-        pointAmbient[i][2] = light.pointAmbient.z;
-
-        pointDiffuse[i][0] = light.pointDiffuse.x;
-        pointDiffuse[i][1] = light.pointDiffuse.y;
-        pointDiffuse[i][2] = light.pointDiffuse.z;
-
-        pointSpecular[i][0] = light.pointSpecular.x;
-        pointSpecular[i][1] = light.pointSpecular.y;
-        pointSpecular[i][2] = light.pointSpecular.z;
+        pointColor[i][0] = light.pointColor.x;
+        pointColor[i][1] = light.pointColor.y;
+        pointColor[i][2] = light.pointColor.z;
     }
 
     if(lightCount > 0)
     {
         setUniform("pointPosition", pointPosition, lightCount);
         setUniform("pointMath", pointMath, lightCount);
-        setUniform("pointAmbient", pointAmbient, lightCount);
-        setUniform("pointDiffuse", pointDiffuse, lightCount);
-        setUniform("pointSpecular", pointSpecular, lightCount);
+        setUniform("pointColor", pointColor, lightCount);
     }
 }
 

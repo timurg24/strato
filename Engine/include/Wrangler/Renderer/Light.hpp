@@ -17,14 +17,10 @@ namespace Wrangler {
     {
         bx::Vec3 position{0.0f, 0.0f, 0.0f};
 
-        float constant = 1.0f;
-        float linear = 0.09f;
-        float quadratic = 0.032f;
+        float range = 1.0f;
         float intensity = 1.0f;
 
-        bx::Vec3 pointAmbient{0.0f, 0.0f, 0.0f};
-        bx::Vec3 pointDiffuse{1.0f, 1.0f, 1.0f};
-        bx::Vec3 pointSpecular{1.0f, 1.0f, 1.0f};
+        bx::Vec3 pointColor{0.0f, 0.0f, 0.0f};
     };
 
 }
