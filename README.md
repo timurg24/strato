@@ -16,6 +16,7 @@ Developing branch to switch the renderer to Google Filament
 
 ## Building
 
+- GNU GCC support is experimental (in Filament) and may cause issues, switching to MSVC may resolve it
 - Update/install submodules using `git submodule update --init --recursive`
 - Generate your CMake project and compile as normal
 - Each time you compile, the content from the `Content` folder is copied to the build directory

@@ -38,8 +38,6 @@ target_link_libraries(Strato
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
-add_dependencies(Strato shaderc)
-
 add_custom_target(
     cook_content ALL
 

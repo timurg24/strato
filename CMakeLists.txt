@@ -27,31 +27,6 @@ include(FetchContent)
 # Prefer static libraries for third-party dependencies.
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
-
-# =========================================================
-# bgfx
-# =========================================================
-
-message(STATUS "Adding BGFX")
-
-set(BGFX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
-
-# Needed for shaderc.
-set(BGFX_BUILD_TOOLS ON CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_SHADER ON CACHE BOOL "" FORCE)
-
-set(BGFX_BUILD_TOOLS_GEOMETRY OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_TEXTURE OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_BIN2C OFF CACHE BOOL "" FORCE)
-
-add_subdirectory(
-    thirdparty/bgfx.cmake
-    EXCLUDE_FROM_ALL
-)
-
-
 # =========================================================
 # GLFW
 # =========================================================
@@ -109,38 +84,23 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(physfs)
 
-
 # =========================================================
-# Assimp
+# Filament
 # =========================================================
+set(FILAMENT_SUPPORTS_OPENGL OFF CACHE BOOL "" FORCE)
+set(FILAMENT_SUPPORTS_VULKAN ON CACHE BOOL "" FORCE)
+set(FILAMENT_ENABLE_MATDBG OFF CACHE BOOL "" FORCE)
 
-message(STATUS "Adding Assimp")
+set(FILAMENT_ENABLE_EXPERIMENTAL_GCC_SUPPORT ON CACHE BOOL "" FORCE)
 
-set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
-set(ASSIMP_BUILD_SAMPLES OFF CACHE BOOL "" FORCE)
-set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
-set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
-
-# Disable exporters.
-set(ASSIMP_NO_EXPORT ON CACHE BOOL "" FORCE)
-
-# Disable every importer by default.
-set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF CACHE BOOL "" FORCE)
-
-# Enable only the formats Strato uses.
-set(ASSIMP_BUILD_GLTF_IMPORTER ON CACHE BOOL "" FORCE)
-set(ASSIMP_BUILD_FBX_IMPORTER ON CACHE BOOL "" FORCE)
-set(ASSIMP_BUILD_OBJ_IMPORTER ON CACHE BOOL "" FORCE)
-
-FetchContent_Declare(
-    assimp
-    GIT_REPOSITORY https://github.com/assimp/assimp.git
-    GIT_TAG v6.0.2
-    GIT_SHALLOW TRUE
+# Build Filament
+add_subdirectory(
+    thirdparty/filament
+    ${CMAKE_BINARY_DIR}/thirdparty/filament
+    EXCLUDE_FROM_ALL
 )
 
-FetchContent_MakeAvailable(assimp)
+message(STATUS "Adding Google Filament")
 
 message(STATUS "Creating Strato dependencies")
 
@@ -149,13 +109,11 @@ add_library(StratoDependencies INTERFACE)
 target_link_libraries(
     StratoDependencies
     INTERFACE
-        bgfx
-        bx
-        bimg
+        filament
+        filament_backend
         glfw
         tul
         PhysFS::PhysFS-static
-        assimp
 )
 
 target_include_directories(
