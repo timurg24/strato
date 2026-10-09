@@ -1,6 +1,6 @@
-# strato
+# strato (Filament Branch)
 
-Open source flight simulator powered by JSBSim
+Developing branch to switch the renderer to Google Filament
 
 ## Folder Structure
 
