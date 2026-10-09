@@ -17,43 +17,7 @@ int main(int argc, char** argv) {
         game.renderer,
         game.app.assets);
 
-    // Camera
-    Wrangler::Camera camera;
-
-    camera.position = bx::Vec3{
-        0.0f,
-        200.0f,
-        800.0f
-    };
-
-    // 180 is facing the aircraft
-    camera.rotation = {
-        bx::toRad(-10.0f),
-        bx::toRad(0.0f),
-        0.0f
-    };
-
-    Wrangler::ShaderSceneParameters params{};
-
-    params.cameraPosition = camera.position;
-
-    // Sun
-    params.sunDirection = bx::Vec3{
-        -0.2f,
-        -1.0f,
-        0.15f
-    };
-
-    params.sunColor = bx::Vec3{
-        0.15f,
-        0.15f,
-        0.15f
-    };
-
-    params.sunIntensity = 1.0f;
     Input input;
-
-    params.pointLightCount = 0;
 
     using Clock = std::chrono::steady_clock;
 
@@ -63,8 +27,6 @@ int main(int argc, char** argv) {
     double accumulator = 0.0;
 
     auto previousTime = Clock::now();
-
-    bgfx::setDebug(BGFX_DEBUG_TEXT);
     while(game.app.running()) {
 
         // measure
@@ -97,27 +59,6 @@ int main(int argc, char** argv) {
         {
             accumulator = 0.0;
         }
-
-
-        bgfx::setViewClear(
-            0,
-            BGFX_CLEAR_COLOR |
-            BGFX_CLEAR_DEPTH,
-            0x808080ff,
-            1.0f,
-            0
-        );
-
-        game.renderer.begin(camera);
-
-        camera.updateValues(
-            width,
-            height
-        );
-
-        game.renderer.renderEntity(game.aircraft.entity, params);
-
-        game.aircraft.drawDebugHUD();
 
         game.app.swapBuffers();
     }

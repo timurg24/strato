@@ -1,11 +1,15 @@
 #include "Wrangler/Core/Application.hpp"
 
 // 3rd party
-#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3.h>
+
+#ifdef _WIN32
+    #define GLFW_EXPOSE_NATIVE_WIN32
+#elif defined(__linux__)
+    #define GLFW_EXPOSE_NATIVE_X11
+#endif
+
 #include <GLFW/glfw3native.h>
-
-#include <bgfx/bgfx.h>
-
 // tul
 #include <tul/ErrorOps.hpp>
 #include <tul/CliOps.hpp>
@@ -32,42 +36,7 @@ Wrangler::Application::Application(const ApplicationParameters& params):
     if(!window) tul::FatalError({"Failed to create GLFW window"});
     tul::Print({"[Application] Created GLFW window\n"});
     
-    // BGFX
-    bool badAPI = false;
-
-    bgfx::Init init{};
-    std::string api = tul::GetValue("graphics");
-    if(api == "dx11")
-        init.type           = bgfx::RendererType::Direct3D11;
-    else if(api == "dx12")
-        init.type           = bgfx::RendererType::Direct3D12;
-    else if(api == "vulkan")
-        init.type           = bgfx::RendererType::Vulkan;
-    else if(api == "gl")
-        init.type           = bgfx::RendererType::OpenGL;
-    else if(api != "") {
-        tul::Alert({"Uknown graphics API: ", api, "\nAutomatically selecting API..."});
-        init.type           = bgfx::RendererType::Count;
-        badAPI = true;
-    }
-    init.vendorId           = BGFX_PCI_ID_NONE;
-
-    init.swapChain.nwh      = glfwGetWin32Window(window);
-    init.swapChain.ndt      = nullptr;
-
-    init.swapChain.width    = width;
-    init.swapChain.height   = height;
-
-    init.reset              = BGFX_RESET_VSYNC;
-
-
-    // todo: add custom callback to get why it crashed
-    if(!bgfx::init(init)) tul::FatalError({"Failed to initialize BGFX, an unsupported graphics API may be in use"});
     
-    tul::Print({"[Application] Initialized BGFX (", bgfx::getRendererName(bgfx::getRendererType()), ")\n"});
-    if(badAPI) tul::Alert({"Selected graphics API: ", bgfx::getRendererName(bgfx::getRendererType())});;
-    
-    Wrangler::Vertex::init();
 }
 
 /// @brief Returns if a key is down
@@ -88,7 +57,6 @@ bool Wrangler::Application::running()
 /// @brief Swaps buffers
 void Wrangler::Application::swapBuffers()
 {
-    bgfx::frame();
 }
 
 /// @brief Polls events
@@ -99,7 +67,6 @@ void Wrangler::Application::pollEvents()
 
 Wrangler::Application::~Application()
 {
-    bgfx::shutdown();
     glfwDestroyWindow(window);
     glfwTerminate();
 }

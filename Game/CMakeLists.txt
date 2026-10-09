@@ -50,7 +50,6 @@ add_custom_target(
 
     DEPENDS
         Strato
-        shaderc
 
     COMMENT "Cooking Wrangler content..."
     VERBATIM

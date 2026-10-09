@@ -74,6 +74,7 @@ set(PHYSFS_BUILD_SHARED OFF CACHE BOOL "" FORCE)
 set(PHYSFS_BUILD_STATIC ON CACHE BOOL "" FORCE)
 set(PHYSFS_BUILD_TEST OFF CACHE BOOL "" FORCE)
 set(PHYSFS_INSTALL OFF CACHE BOOL "" FORCE)
+set(PHYSFS_TARGETNAME_DIST "physfs-dist" CACHE STRING "" FORCE)
 
 FetchContent_Declare(
     physfs
@@ -110,7 +111,7 @@ target_link_libraries(
     StratoDependencies
     INTERFACE
         filament
-        filament_backend
+        gltfio
         glfw
         tul
         PhysFS::PhysFS-static
