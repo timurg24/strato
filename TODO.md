@@ -9,7 +9,7 @@ A reminder of some features I might forget about
 
 ## Technical
 
-- [ ] Replace immediate mode rendering with Filament-like system
+- [x] Replace immediate mode rendering with Filament-like system
 - [ ] Make tul error handling cross platform
 - [x] Replace `.pak` with normal folders to match JSBSim's requirement for physical folders. There should now be no difference between Engine and Game content, making the file structure look more neat.
 - [ ] Add Dear ImGui
@@ -18,4 +18,3 @@ A reminder of some features I might forget about
 - [x] Replace Content folder with a Chisel-style "Working" folder
   - Working folder contains source files (shader sources, textures, payloads, etc.)
   - "Cooked" folder contains finished files (shader binaries, optimized textures, etc.)
-- [ ] Replace pipeline system with something more flexible (when needed)
