@@ -80,6 +80,35 @@ StratoGame::StratoGame(Settings settings) : app({.title = "Strato Flight Simulat
     renderer.setSun(sun);
 }
 
+/// @brief Update loop
+void StratoGame::run()
+{
+
+    constexpr double fixedDt = 1.0 / STRATO_PHYS_HZ;
+
+    double lastTime = glfwGetTime();
+    double acc = 0.0;
+
+    while(app.running()) {
+
+        double now = glfwGetTime();
+        double frameDt = std::min(now - lastTime, 0.1);
+        lastTime = now;
+
+        acc += frameDt;
+
+        app.pollEvents();
+        input.keyboardInput(app.window, aircraft.controlState, frameDt);
+
+        while(acc >= fixedDt) {
+            aircraft.update();
+            acc -= fixedDt;
+        }
+
+        render();
+    }
+}
+
 /// @brief Renders the game
 void StratoGame::render()
 {

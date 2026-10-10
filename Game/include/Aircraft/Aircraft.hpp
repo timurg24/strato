@@ -20,6 +20,8 @@
 #include <Wrangler/AssetManager/AssetManager.hpp>
 #include <Wrangler/Renderer/Renderer.hpp>
 
+#define STRATO_PHYS_HZ 120.0
+
 namespace JSBSim {
     class FGAtmosphere;
     class FGWinds;
@@ -91,7 +93,7 @@ public:
     // TODO: Make env state a reference to some other environment object
 
     // data
-    double physicsHz    = 120.0;
+    double physicsHz    = STRATO_PHYS_HZ;
     double physicsDt    = 1.0 / physicsHz;
 private:
 

@@ -25,6 +25,9 @@ class StratoGame {
 private:
     void renderDebugMenus();
     void updateAircraftTransform();
+
+    void physicsUpdate();
+    void render();
 public:
     Wrangler::Application app;
     Wrangler::Renderer renderer;
@@ -32,5 +35,6 @@ public:
     Aircraft aircraft;
 
     StratoGame(Settings settings);
-    void render();
+
+    void run();
 };

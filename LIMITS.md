@@ -5,6 +5,7 @@ A list of defines that set some limits. Change these to increase limits.
 ## Strato
 
 - `STRATO_MAX_ENGINES` - Maximum number of engines per aircraft
+- `STRATO_PHYS_HZ` - Simulation speed in Hz (Default is 120hz)
 
 ## Wrangler
 
