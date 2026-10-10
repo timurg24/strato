@@ -48,24 +48,26 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
 
 
     
-    tul::Print({"[Liberty] [Aircraft] Loaded aircraft: ", aircraftFileName, "\n"});
+    tul::Print({"[Liberty] [Aircraft] Loaded aircraft: ", aircraftFileName, "..."});
     int engineCount = propulsion->GetNumEngines();
-    tul::Print({"\t- Engines: ", std::to_string(engineCount), "\n"});
-
-    tul::Print({"\t- Registration: ", registration, "\n"});
-    tul::Print({"\t- Position: ", std::to_string(state.latitude), ", ", std::to_string(state.longitude), "\n"});
-    tul::Print({"\t- Altitude: ", std::to_string(state.altitude), "\n"});
 
     // pitch trim
     controlState.pitchTrim = fcs->GetPitchTrimCmd(); // TODO: Review what changes this makes
     controlState.engineCount = propulsion->GetNumEngines();
     if(controlState.engineCount > STRATO_MAX_ENGINES) {
+        tul::Print({"FAIL\n"});
         tul::Alert({"Engine count (", std::to_string(controlState.engineCount), ") exceeds max limit of ", std::to_string(STRATO_MAX_ENGINES), " engines"});
         controlState.engineCount = STRATO_MAX_ENGINES;
     }
 
     // load 3d
-    Wrangler::AssetID model = assets.loadModel((aircraftFolder / "assets" / "Models" / "Cessna172.fbx").generic_string());
+    Wrangler::AssetID model = assets.loadModel((aircraftFolder / "assets" / "Models" / "c172-freeware.glb").generic_string());
+    tul::Print({"OK\n"});
+    tul::Print({"\t- Engines: ", std::to_string(engineCount), "\n"});
+
+    tul::Print({"\t- Registration: ", registration, "\n"});
+    tul::Print({"\t- Position: ", std::to_string(state.latitude), ", ", std::to_string(state.longitude), "\n"});
+    tul::Print({"\t- Altitude: ", std::to_string(state.altitude), "\n"});
 }
 
 /// @brief Copies user inputs (ControlState) to JSBSim

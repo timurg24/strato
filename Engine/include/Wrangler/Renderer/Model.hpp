@@ -5,17 +5,15 @@
  * Contains multiple meshes
  */
 
-// std
-#include <vector>
-
-// renderer
-#include "CPUMesh.hpp"
+#include <gltfio/AssetLoader.h>
+#ifdef assert_invariant
+    #undef assert_invariant
+#endif
 
 namespace Wrangler {
 
-    // TODO: Move loader fucntions into AssetManager
-    class Model {
-    public:
+    struct Model {
+        filament::gltfio::FilamentAsset* asset = nullptr;
     };
 
 }

@@ -33,18 +33,6 @@ void Wrangler::Filesystem::init(const char *argv0, const std::filesystem::path& 
         });
     tul::Print({"[Filesystem] PhyFS initialized\n"});
 
-    // std::filesystem::path engineContent =
-    //     contentDir / "Wrangler";
-    // if (!PHYSFS_mount(engineContent.string().c_str(), nullptr, 1))
-    // {
-    //     tul::FatalError({
-    //         "Failed to mount engine content: ",
-    //         engineContent.string().c_str(),
-    //         "\nPhysFS Error: ",
-    //         PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())
-    //     });
-    // } else tul::Print({"[Filesystem] Mounted engine content\n"});
-
 
     if (!PHYSFS_mount(contentPath.string().c_str(), nullptr, 1))
     {
@@ -81,8 +69,26 @@ const Wrangler::File Wrangler::Filesystem::readFile(const std::string &path) con
 {
     PHYSFS_File* handle = PHYSFS_openRead(path.c_str());
 
-    if (!handle)
-        tul::Alert({"Couldn't open file in archive: ", path});
+    if (!handle) {
+        const char* realDir = PHYSFS_getRealDir(path.c_str());
+
+        if (realDir) {
+            auto fullPath =
+                std::filesystem::path(realDir) / path;
+
+            tul::Alert({
+                "Couldn't open file: ",
+                fullPath.string()
+            });
+        } else {
+            tul::Alert({
+                "File not found in mounted PhysFS paths: ",
+                path,
+                "\nPhysFS error: ",
+                PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())
+            });
+        }
+    }
 
     const PHYSFS_sint64 size = PHYSFS_fileLength(handle);
 

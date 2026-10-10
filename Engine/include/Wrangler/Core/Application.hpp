@@ -9,12 +9,16 @@
 #include <string>
 #include <filesystem>
 
-// 3rd party
-#include <GLFW/glfw3.h>
-
 // Wrangler
 #include "Wrangler/AssetManager/AssetManager.hpp"
 #include "Wrangler/Renderer/Renderer.hpp"
+
+// 3rd party
+#include <GLFW/glfw3.h>
+#include <filament/Engine.h>
+#include <filament/IndexBuffer.h>
+#include <filament/RenderableManager.h>
+#include <filament/Renderer.h>
 
 namespace Wrangler {
 
@@ -30,6 +34,7 @@ namespace Wrangler {
     public:
     
         GLFWwindow* window = nullptr;
+        filament::Engine* filamentEngine = nullptr;
         Filesystem fs;
         AssetManager assets;
 

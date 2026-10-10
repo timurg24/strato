@@ -19,7 +19,11 @@
 #include "Wrangler/Renderer/Model.hpp"
 #include "Wrangler/Renderer/Material.hpp"
 #include "Wrangler/Renderer/Texture.hpp"
-#include "Wrangler/Renderer/CPUMesh.hpp"
+
+#include <gltfio/AssetLoader.h>
+#include <gltfio/FilamentAsset.h>
+#include <gltfio/ResourceLoader.h>
+#include <gltfio/TextureProvider.h>
 
 namespace Wrangler {
     
@@ -30,14 +34,25 @@ namespace Wrangler {
         std::unordered_map<Wrangler::AssetID, std::shared_ptr<Texture>> textures;
 
         const Filesystem& fs;
+
+
     public:
-        AssetManager(const Filesystem& fs);
+
+        filament::gltfio::AssetLoader* assetLoader = nullptr; // general purpose
+        filament::gltfio::MaterialProvider* materialProvider = nullptr;
+        filament::gltfio::ResourceLoader* resourceLoader = nullptr; // filament specific files
+        filament::gltfio::TextureProvider* stbDecoder = nullptr;
+        filament::gltfio::TextureProvider* ktxDecoder = nullptr;
+
+        AssetManager(const Filesystem& fs, filament::Engine* filamentEngine);
 
         AssetID loadModel(const std::string& path);
         std::shared_ptr<const Model> getModel(AssetID id) const;
 
         AssetID loadTexture(const std::string& path);
         std::shared_ptr<const Texture> getTexture(AssetID id) const;
+
+        ~AssetManager();
     };
 
 }

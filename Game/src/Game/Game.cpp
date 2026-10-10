@@ -8,11 +8,11 @@ StratoGame::StratoGame(Settings settings):
         .archivePath = "Content"
     }),
     renderer({
+        .filamentEngine = app.filamentEngine,
         .assets = app.assets,
         .fs = app.fs,
         .width = settings.width,
-        .height = settings.height,
-        .sceneShaderPath = "Shaders/pbr/pbr.pay"
+        .height = settings.height
     })
 {
 

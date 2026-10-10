@@ -18,7 +18,10 @@ Wrangler::Application::Application(const ApplicationParameters& params):
     width(params.width), 
     height(params.height),
     fs(tul::globalArgs[0].c_str(), params.archivePath),
-    assets(fs)
+    filamentEngine(filament::Engine::create(
+        filament::Engine::Backend::VULKAN
+    )),
+    assets(fs, filamentEngine)
 {
     // GLFW
     if(!glfwInit()) tul::FatalError({"Failed to initialize GLFW"});
@@ -35,8 +38,6 @@ Wrangler::Application::Application(const ApplicationParameters& params):
     
     if(!window) tul::FatalError({"Failed to create GLFW window"});
     tul::Print({"[Application] Created GLFW window\n"});
-    
-    
 }
 
 /// @brief Returns if a key is down

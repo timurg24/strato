@@ -8,7 +8,33 @@
 #include <stb_image.h>
 
 
-Wrangler::AssetManager::AssetManager(const Filesystem &fs) : fs(fs) {
+Wrangler::AssetManager::AssetManager(const Filesystem &fs, filament::Engine* filamentEngine) : fs(fs) {
+
+    filament::gltfio::ResourceConfiguration config{};
+    config.engine = filamentEngine;
+    config.gltfPath = "";
+
+    materialProvider = filament::gltfio::createJitShaderProvider(
+        filamentEngine,
+        true,
+        {}
+    );
+
+    resourceLoader = new filament::gltfio::ResourceLoader(config);
+    stbDecoder = filament::gltfio::createStbProvider(filamentEngine);
+    ktxDecoder = filament::gltfio::createKtx2Provider(filamentEngine);
+
+    resourceLoader->addTextureProvider("image/png", stbDecoder);
+    resourceLoader->addTextureProvider("image/jpeg", stbDecoder);
+    resourceLoader->addTextureProvider("image/ktx2", ktxDecoder);
+
+    resourceLoader->setConfiguration(config);
+
+    assetLoader = filament::gltfio::AssetLoader::create({
+        filamentEngine,
+        materialProvider
+    });
+
     tul::Print({"[AssetManager] AssetManager initialized\n"});
 }
 
@@ -26,6 +52,13 @@ Wrangler::AssetID Wrangler::AssetManager::loadModel(const std::string &path)
         id,
         model
     );
+
+    model->asset = assetLoader->createAsset(
+        data.data(),
+        data.size()
+    );
+
+    if(!model) tul::Alert({"Failed to parse model: ", path});
 
     return id;
 }
@@ -83,4 +116,12 @@ std::shared_ptr<const Wrangler::Texture> Wrangler::AssetManager::getTexture(Asse
         return nullptr;
 
     return it->second;
+}
+
+Wrangler::AssetManager::~AssetManager()
+{
+    if(materialProvider) delete materialProvider;
+    if(resourceLoader) delete resourceLoader;
+    if(stbDecoder) delete stbDecoder;
+    if(ktxDecoder) delete ktxDecoder;
 }

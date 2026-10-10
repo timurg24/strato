@@ -11,6 +11,10 @@
 
 // 3rd party
 #include <math/vec3.h>
+#include <filament/RenderableManager.h>
+#include <filament/Renderer.h>
+#include <filament/Scene.h>
+
 namespace Wrangler {
 
     struct RenderableEntity {
@@ -23,15 +27,12 @@ namespace Wrangler {
     };
 
     struct RendererParameters {
+        filament::Engine* filamentEngine;
         AssetManager& assets;
         const Filesystem& fs;
 
         int& width;
         int& height;
-
-        std::string shadowShaderPath;
-        std::string sceneShaderPath;
-        std::string postProcessShaderPath;
     };
 
     class Renderer {
@@ -41,6 +42,7 @@ namespace Wrangler {
         int& width;
         int& height;
     public:
+        filament::Renderer* filamentRenderer;
         Renderer(const RendererParameters& params);
 
         ~Renderer();

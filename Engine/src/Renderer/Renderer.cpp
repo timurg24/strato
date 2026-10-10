@@ -11,7 +11,7 @@ Wrangler::Renderer::Renderer(const RendererParameters &params) : assets(params.a
                                                                  width(params.width),
                                                                  height(params.height)
 {
-
+    filamentRenderer = params.filamentEngine->createRenderer();
 }
 
 
