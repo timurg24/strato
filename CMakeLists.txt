@@ -7,6 +7,23 @@ project(Strato
 )
 
 # =========================================================
+# MSVC Runtime Configuration
+# =========================================================
+
+if(MSVC)
+    # Release: /MT
+    # Debug:   /MTd
+    set(CMAKE_MSVC_RUNTIME_LIBRARY
+        "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+    )
+
+    # Match Filament's static CRT configuration
+    set(USE_STATIC_CRT ON CACHE BOOL
+        "Use static MSVC runtime" FORCE
+    )
+endif()
+
+# =========================================================
 # C++ Configuration
 # =========================================================
 

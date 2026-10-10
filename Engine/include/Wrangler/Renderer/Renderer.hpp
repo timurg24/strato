@@ -13,18 +13,6 @@
 // 3rd party
 #include <GLFW/glfw3.h>
 
-#if defined(_WIN32)
-    #define GLFW_EXPOSE_NATIVE_WIN32
-#elif defined(__linux__)
-    #define GLFW_EXPOSE_NATIVE_X11
-#endif
-
-#include <GLFW/glfw3native.h>
-
-#ifdef Success
-    #undef Success
-#endif
-
 
 #include <math/vec3.h>
 #include <filament/Camera.h>

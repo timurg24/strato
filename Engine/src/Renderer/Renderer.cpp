@@ -17,6 +17,25 @@
 #include <math/mat4.h>
 #include <math/quat.h>
 
+// Native GLFW - include AFTER Filament headers
+#if defined(_WIN32)
+    #define GLFW_EXPOSE_NATIVE_WIN32
+#elif defined(__linux__)
+    #define GLFW_EXPOSE_NATIVE_X11
+#endif
+
+#include <GLFW/glfw3native.h>
+
+// X11 macro cleanup
+#ifdef Success
+    #undef Success
+#endif
+
+// Windows macro cleanup
+#ifdef OPAQUE
+    #undef OPAQUE
+#endif
+
 #ifdef assert_invariant
     #undef assert_invariant
 #endif
