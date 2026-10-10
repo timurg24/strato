@@ -126,12 +126,9 @@ void Wrangler::Renderer::updateModelTransform(const RenderableEntity &entity)
 
     using namespace filament::math;
 
-    // Convert Euler angles from degrees to radians.
-    constexpr float DEG_TO_RAD = 0.017453292519943295f;
-
-    const float rx = entity.rotation.x * DEG_TO_RAD;
-    const float ry = entity.rotation.y * DEG_TO_RAD;
-    const float rz = entity.rotation.z * DEG_TO_RAD;
+    const float rx = entity.rotation.x;
+    const float ry = entity.rotation.y;
+    const float rz = entity.rotation.z;
 
     // Rotation order: Z * Y * X
     const mat4f rotation =

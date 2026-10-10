@@ -271,12 +271,13 @@ void Aircraft::readFromJSBSim()
 }
 
 /// @brief Sets the RenderEntity rotation to that of data from JSBSim
+/// X is roll, Y is pitch, and Z is yaw/heading (in radians)
 void Aircraft::update3DRotation()
 {
     entity.rotation = {
-        static_cast<float>(-aircraftState.pitch), // pitch / theta
-        static_cast<float>( aircraftState.heading), // heading / psi
-        static_cast<float>( aircraftState.roll)  // roll / phi
+        static_cast<float>(aircraftState.roll), // pitch / theta
+        static_cast<float>(aircraftState.pitch), // heading / psi
+        static_cast<float>(aircraftState.heading)  // roll / phi
     };
 }
 
