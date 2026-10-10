@@ -24,6 +24,9 @@ Wrangler::Application::Application(const ApplicationParameters& params):
     assets(fs, filamentEngine)
 {
     // GLFW
+    #ifdef __linux__
+        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+    #endif
     if(!glfwInit()) tul::FatalError({"Failed to initialize GLFW"});
     
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);

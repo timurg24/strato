@@ -10,14 +10,7 @@ int main(int argc, char** argv) {
     StratoGame game({width, height});
 
     // Flight
-    StartupState startup = {};
-    game.aircraft.init(
-        "Aircraft/Cessna 172P Skyhawk", "c172p", 
-        startup,
-        game.renderer,
-        game.app.assets);
-
-    Input input;
+    
 
     using Clock = std::chrono::steady_clock;
 
@@ -49,7 +42,7 @@ int main(int argc, char** argv) {
         int physicsSteps = 0;
 
         while(accumulator >= game.aircraft.physicsDt && physicsSteps < maxPhysicsSteps) {
-            input.keyboardInput(game.app.window, game.aircraft.controlState, game.aircraft.physicsDt);
+            game.input.keyboardInput(game.app.window, game.aircraft.controlState, game.aircraft.physicsDt);
             game.aircraft.update();
             accumulator -= game.aircraft.physicsDt;
             ++physicsSteps;
@@ -60,6 +53,7 @@ int main(int argc, char** argv) {
             accumulator = 0.0;
         }
 
+        game.render();
         game.app.swapBuffers();
     }
 }

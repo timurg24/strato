@@ -111,6 +111,7 @@ target_link_libraries(
     StratoDependencies
     INTERFACE
         filament
+        ktxreader
         gltfio
         glfw
         tul

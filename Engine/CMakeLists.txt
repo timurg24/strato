@@ -8,9 +8,7 @@ add_library(Wrangler
     src/Filesystem/Filesystem.cpp
     src/Filesystem/Payload.cpp
 
-    src/Renderer/Model.cpp
     src/Renderer/Renderer.cpp
-    src/Renderer/Material.cpp
 
     src/AssetManager/AssetManager.cpp
 )

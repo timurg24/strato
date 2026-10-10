@@ -62,6 +62,7 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
 
     // load 3d
     Wrangler::AssetID model = assets.loadModel((aircraftFolder / "assets" / "Models" / "c172-freeware.glb").generic_string());
+    entity.model = model;
     tul::Print({"OK\n"});
     tul::Print({"\t- Engines: ", std::to_string(engineCount), "\n"});
 

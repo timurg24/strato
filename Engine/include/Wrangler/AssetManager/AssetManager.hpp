@@ -17,8 +17,6 @@
 
 // renderer
 #include "Wrangler/Renderer/Model.hpp"
-#include "Wrangler/Renderer/Material.hpp"
-#include "Wrangler/Renderer/Texture.hpp"
 
 #include <gltfio/AssetLoader.h>
 #include <gltfio/FilamentAsset.h>
@@ -30,12 +28,8 @@ namespace Wrangler {
     class AssetManager {
     private:
         std::unordered_map<Wrangler::AssetID, std::shared_ptr<Model>> models;
-        // std::unordered_map<Wrangler::AssetID, std::shared_ptr<Shader>> shaders;
-        std::unordered_map<Wrangler::AssetID, std::shared_ptr<Texture>> textures;
 
         const Filesystem& fs;
-
-
     public:
 
         filament::gltfio::AssetLoader* assetLoader = nullptr; // general purpose
@@ -48,11 +42,6 @@ namespace Wrangler {
 
         AssetID loadModel(const std::string& path);
         std::shared_ptr<const Model> getModel(AssetID id) const;
-
-        AssetID loadTexture(const std::string& path);
-        std::shared_ptr<const Texture> getTexture(AssetID id) const;
-
-        ~AssetManager();
     };
 
 }

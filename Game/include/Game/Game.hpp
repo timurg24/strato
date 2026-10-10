@@ -25,8 +25,9 @@ class StratoGame {
 public:
     Wrangler::Application app;
     Wrangler::Renderer renderer;
+    Input input;
+    Aircraft aircraft;
 
     StratoGame(Settings settings);
-
-    Aircraft aircraft;
+    void render();
 };
