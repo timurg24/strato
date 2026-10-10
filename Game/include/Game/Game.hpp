@@ -22,6 +22,9 @@
 #include "Input/Input.hpp"
 
 class StratoGame {
+private:
+    void renderDebugMenus();
+    void updateAircraftTransform();
 public:
     Wrangler::Application app;
     Wrangler::Renderer renderer;

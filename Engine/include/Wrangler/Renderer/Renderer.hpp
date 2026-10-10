@@ -35,6 +35,12 @@
 #include <filament/View.h>
 #include <filament/SwapChain.h>
 
+// #include <filagui/ImGuiHelper.h>
+// #include <imgui.h>
+// #include <imgui_impl_glfw.h>
+
+// #include <memory>
+
 namespace Wrangler {
 
     struct RenderableEntity {
@@ -64,12 +70,15 @@ namespace Wrangler {
         int& height;
         filament::Engine* filamentEngine;
         utils::Entity cameraEntity;
+        filament::View* uiView = nullptr;
     public:
         filament::Renderer* filamentRenderer;
         filament::Camera* filamentCamera;
         filament::Scene* filamentScene;
         filament::View* filamentView;
         filament::SwapChain* filamentSwapChain;
+
+        // std::unique_ptr<filagui::ImGuiHelper> imguiHelper;
 
         Renderer(const RendererParameters& params);
 
