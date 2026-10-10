@@ -104,20 +104,19 @@ void Wrangler::Renderer::setSun(Light sun)
     filamentScene->addEntity(sunEntity);
 }
 
-/// @brief Submits an entity to the scene to be drawn
+/// @brief Updates model entity transform
 /// @param entity Entity
-void Wrangler::Renderer::submitModel(const RenderableEntity &entity)
+void Wrangler::Renderer::updateModelTransform(const RenderableEntity &entity)
 {
-    auto asset = assets.getModel(entity.model); // copy not reference
-    if(!asset) {
-        tul::Alert({"Attempted to submit an entity with no model set"});
+    auto model = assets.getModel(entity.model);
+    if(!model) {
+        tul::Alert({"Attempted to update an entity with no model set"});
         return;
     }
 
-    // set transform
     auto& tm = filamentEngine->getTransformManager();
 
-    auto root = asset->asset->getRoot();
+    auto root = model->asset->getRoot();
     auto instance = tm.getInstance(root);
 
     if(!instance) {
@@ -147,35 +146,24 @@ void Wrangler::Renderer::submitModel(const RenderableEntity &entity)
         mat4f::scaling(entity.scale);
 
     tm.setTransform(instance, transform);
+}
+
+/// @brief Adds a model to the scene
+/// @param entity Entity
+void Wrangler::Renderer::addModel(const RenderableEntity &entity)
+{
+    auto model = assets.getModel(entity.model);
+    if(!model) {
+        tul::Alert({"Attempted to submit an entity with no model set"});
+        return;
+    }
+
+    updateModelTransform(entity);
 
     filamentScene->addEntities(
-        asset->asset->getEntities(),
-        asset->asset->getEntityCount()
+        model->asset->getEntities(),
+        model->asset->getEntityCount()
     );
-
-    std::cout << "Model entities: "
-        << asset->asset->getEntityCount() << '\n';
-
-    std::cout << "Scene renderables: "
-            << filamentScene->getRenderableCount() << '\n';
-
-    std::cout << "Scene lights: "
-            << filamentScene->getLightCount() << '\n';
-
-    const auto bounds = asset->asset->getBoundingBox();
-
-const auto center = bounds.center();
-const auto extent = bounds.extent();
-
-std::cout << "Model center: "
-          << center.x << ", "
-          << center.y << ", "
-          << center.z << '\n';
-
-std::cout << "Model half extent: "
-          << extent.x << ", "
-          << extent.y << ", "
-          << extent.z << '\n';
 }
 
 /// @brief Draws the scene and clears it for the next frame

@@ -33,12 +33,13 @@ StratoGame::StratoGame(Settings settings):
         .fallOff = 20.0f
     };
 
+    renderer.addModel(aircraft.entity);
     renderer.setSun(sun);
-    renderer.submitModel(aircraft.entity);
 }
 
 /// @brief Renders the game
 void StratoGame::render()
 {
+    renderer.updateModelTransform(aircraft.entity);
     renderer.renderScene();
 }

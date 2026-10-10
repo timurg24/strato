@@ -74,7 +74,8 @@ namespace Wrangler {
         Renderer(const RendererParameters& params);
 
         void setSun(Light sun);
-        void submitModel(const RenderableEntity& entity);
+        void updateModelTransform(const RenderableEntity& entity);
+        void addModel(const RenderableEntity& entity);
         void renderScene();
 
         ~Renderer();
