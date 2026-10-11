@@ -19,7 +19,7 @@ Wrangler::Application::Application(const ApplicationParameters& params):
     height(params.height),
     fs(tul::globalArgs[0].c_str(), params.archivePath),
     filamentEngine(filament::Engine::create(
-        filament::Engine::Backend::VULKAN
+        filament::Engine::Backend::OPENGL
     )),
     assets(fs, filamentEngine)
 {

@@ -17,7 +17,7 @@ Open source flight simulator powered by JSBSim
 ## Building
 
 - MinGW is not supported
-- Update/install submodules using `git submodule update --init --recursive`
+- Install submodules using `git submodule update --init --recursive`
 - Generate your CMake project and compile as normal
 - Each time you compile, the content from the `Content` folder is copied to the build directory
 

@@ -9,9 +9,6 @@
 #include <Wrangler/Core/Application.hpp>
 #include <Wrangler/Renderer/Renderer.hpp>
 
-// std
-#include <chrono>
-
 // TUL
 #include <tul/CliOps.hpp>
 #include <tul/ErrorOps.hpp>
