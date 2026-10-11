@@ -5,7 +5,7 @@
 /// @brief Requests elevation textures and sets the sampler to it
 void Strato::Terrain::updateTerrainTexture()
 {
-    auto data = HttpClient::get();
+    auto data = HttpClient::get("test");
 }
 
 Strato::Terrain::Terrain(filament::Engine &engine)

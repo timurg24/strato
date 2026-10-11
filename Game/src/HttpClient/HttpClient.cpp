@@ -26,9 +26,9 @@ std::vector<uint8_t> Strato::HttpClient::get(const std::string& url) {
     if(!curl) tul::FatalError({"Failed to initialize CURL"});
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURL_FOLLOWLOCATION, 1L);
-    curl_easy_setopt(curl, CURL_WRITEFUNCTION, Strato::HttpClient::writeCallback);
-    curl_easy_setopt(curl, CURL_WRITEDTATA, &data);
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Strato::HttpClient::writeCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &data);
 
     CURLcode result = curl_easy_perform(curl);
 

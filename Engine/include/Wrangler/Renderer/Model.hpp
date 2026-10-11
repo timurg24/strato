@@ -6,9 +6,9 @@
  */
 
 #include <gltfio/AssetLoader.h>
-#ifdef assert_invariant
-    #undef assert_invariant
-#endif
+// #ifdef assert_invariant
+//     #undef assert_invariant
+// #endif
 
 namespace Wrangler {
 

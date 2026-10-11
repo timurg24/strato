@@ -16,7 +16,12 @@ Open source flight simulator powered by JSBSim
 
 ## Building
 
-- GNU GCC support is experimental (in Filament) and may cause issues, switching to MSVC may resolve it
+- MinGW is not supported
 - Update/install submodules using `git submodule update --init --recursive`
 - Generate your CMake project and compile as normal
 - Each time you compile, the content from the `Content` folder is copied to the build directory
+
+## Platforms
+
+- Windows (with MSVC)
+- GNU/Linux (with GCC)
