@@ -4,11 +4,13 @@ add_executable(Strato
     src/Game/Game.cpp
     src/Aircraft/Aircraft.cpp
     src/Input/Input.cpp
+    src/HttpClient/HttpClient.cpp
+    src/Terrain/Terrain.cpp
 )
 
 target_include_directories(Strato
     PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
 # =========================================================

@@ -176,6 +176,48 @@ target_link_libraries(imgui_glfw
 )
 
 # =========================================================
+# libcurl
+# =========================================================
+
+message(STATUS "Adding libcurl")
+
+set(BUILD_STATIC_LIBS ON CACHE BOOL "" FORCE)
+set(BUILD_CURL_EXE OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(CURL_DISABLE_INSTALL ON CACHE BOOL "" FORCE)
+
+# HTTP and HTTPS only
+set(HTTP_ONLY ON CACHE BOOL "" FORCE)
+
+# Disable unnecessary dependencies
+set(CURL_USE_LIBPSL OFF CACHE BOOL "" FORCE)
+set(CURL_BROTLI OFF CACHE STRING "" FORCE)
+set(CURL_ZSTD OFF CACHE STRING "" FORCE)
+set(USE_NGHTTP2 OFF CACHE BOOL "" FORCE)
+
+# TLS configuration
+if(WIN32)
+    set(CURL_USE_SCHANNEL ON CACHE BOOL "" FORCE)
+    set(CURL_USE_OPENSSL OFF CACHE BOOL "" FORCE)
+
+    if(MSVC)
+        set(CURL_STATIC_CRT ON CACHE BOOL "" FORCE)
+    endif()
+else()
+    set(CURL_USE_OPENSSL ON CACHE BOOL "" FORCE)
+endif()
+
+FetchContent_Declare(
+    curl
+    GIT_REPOSITORY https://github.com/curl/curl.git
+    GIT_TAG curl-8_22_0
+    GIT_SHALLOW TRUE
+)
+
+FetchContent_MakeAvailable(curl)
+
+# =========================================================
 # Strato Dependencies
 # =========================================================
 
@@ -203,6 +245,9 @@ target_link_libraries(StratoDependencies
 
         # Filesystem
         PhysFS::PhysFS-static
+
+        # Networking
+        CURL::libcurl
 )
 
 target_include_directories(StratoDependencies

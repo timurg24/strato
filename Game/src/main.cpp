@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 {
     tul::SetupArguments(argc, argv);
 
-    StratoGame strato({width, height});
+    Strato::Game strato({width, height});
 
     strato.run();
 

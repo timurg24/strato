@@ -41,14 +41,14 @@
 #include <tul/StringOps.hpp>
 
 /// @brief Initializes the aircraft and JSBSim systems
-void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::string& aircraftFileName, const StartupState& state, Wrangler::Renderer& renderer, Wrangler::AssetManager& assets) {
+void Strato::Aircraft::init(const std::filesystem::path& aircraftFolder, const std::string& aircraftFileName, const StartupState& state, Wrangler::Renderer& renderer, Wrangler::AssetManager& assets) {
     initJSBSystems();
     loadFlightModels(aircraftFolder, aircraftFileName);
     if(!setupStartupState(state)) tul::FatalError({"Failed to set a startup state for aircraft"});
 
 
     
-    tul::Print({"[Liberty] [Aircraft] Loaded aircraft: ", aircraftFileName, "..."});
+    tul::Print({"[Liberty] [Strato::Aircraft] Loaded aircraft: ", aircraftFileName, "..."});
     int engineCount = propulsion->GetNumEngines();
 
     // pitch trim
@@ -72,7 +72,7 @@ void Aircraft::init(const std::filesystem::path& aircraftFolder, const std::stri
 }
 
 /// @brief Copies user inputs (ControlState) to JSBSim
-void Aircraft::coypToJSBSim()
+void Strato::Aircraft::coypToJSBSim()
 {
     // control surfaces
     fcs->SetDaCmd(controlState.aileron); // set aileron
@@ -170,8 +170,8 @@ void Aircraft::coypToJSBSim()
     );
 }
 
-/// @brief Reads AircraftState from JSBSim
-void Aircraft::readFromJSBSim()
+/// @brief Reads aircraftState from JSBSim
+void Strato::Aircraft::readFromJSBSim()
 {
     // altitude
     aircraftState.altitudeASL = propagate->GetAltitudeASL();
@@ -272,7 +272,7 @@ void Aircraft::readFromJSBSim()
 
 /// @brief Sets the RenderEntity rotation to that of data from JSBSim
 /// X is roll, Y is pitch, and Z is yaw/heading (in radians)
-void Aircraft::update3DRotation()
+void Strato::Aircraft::update3DRotation()
 {
     entity.rotation = {
         static_cast<float>(aircraftState.roll), // pitch / theta
@@ -281,7 +281,7 @@ void Aircraft::update3DRotation()
     };
 }
 
-void Aircraft::setPhysicsRate(double hz)
+void Strato::Aircraft::setPhysicsRate(double hz)
 {
     physicsHz = hz;
     physicsDt = 1.0 / hz;
@@ -289,7 +289,7 @@ void Aircraft::setPhysicsRate(double hz)
     fdm->Setdt(physicsDt);
 }
 
-void Aircraft::update()
+void Strato::Aircraft::update()
 {
     coypToJSBSim();
     fdm->Run();
@@ -300,20 +300,20 @@ void Aircraft::update()
 
 /// @brief Returns the altitude
 /// @return 
-double Aircraft::getAltitude()
+double Strato::Aircraft::getAltitude()
 {
     return aircraftState.altitudeASL;
 }
 
 /// @brief Displays some information using the BGFX debug text function
-void Aircraft::drawDebugHUD() const
+void Strato::Aircraft::drawDebugHUD() const
 {
     
 }
 
 /// @brief Initializes the pointers for the subsystes
 /// @return True on success
-bool Aircraft::initJSBSystems()
+bool Strato::Aircraft::initJSBSystems()
 {
     fdm = std::make_unique<JSBSim::FGFDMExec>();
 
@@ -338,7 +338,7 @@ bool Aircraft::initJSBSystems()
 
 /// @brief Loads the required flight model files
 /// @return True on success
-bool Aircraft::loadFlightModels(
+bool Strato::Aircraft::loadFlightModels(
     const std::filesystem::path& aircraftFolder,
     const std::string& aircraftFileName)
 {
@@ -355,7 +355,7 @@ bool Aircraft::loadFlightModels(
     {
         tul::FatalError({
             "Failed to load aircraft!\n",
-            "Aircraft Folder: ", folder.string(),
+            "Strato::Aircraft Folder: ", folder.string(),
             "\nFile Name: ", aircraftFileName,
             "\nCheck console for details"
         });
@@ -366,7 +366,7 @@ bool Aircraft::loadFlightModels(
 
 /// @brief Sets up the aircraft startup state
 /// @return True on success
-bool Aircraft::setupStartupState(const StartupState& state)
+bool Strato::Aircraft::setupStartupState(const StartupState& state)
 {
 
     // SET THE STATE

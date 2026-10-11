@@ -1,0 +1,26 @@
+material {
+    name : TerrainLit,
+    shadingModel: lit,
+    apiLevel : 2,
+    requires : [
+        uv0
+    ],
+    parameters : [
+        {
+            type : sampler2d,
+            name : albedo
+        },
+        {
+            type : sampler2d,
+            name : elevation
+        }
+    ]
+}
+
+vertex {
+    void materialVertex(inout MaterialVertexInputs material) {
+        // adjust for mapzen files
+        float height = texture(materialParams_elevation, material.uv0).r;
+        
+    }
+}

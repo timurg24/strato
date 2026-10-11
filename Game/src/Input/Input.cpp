@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <algorithm>
 
-void Input::clampSignedNormal(SignedNormal& value)
+void Strato::Input::clampSignedNormal(SignedNormal& value)
 {
     value = std::clamp(
         value,
@@ -11,7 +11,7 @@ void Input::clampSignedNormal(SignedNormal& value)
     );
 }
 
-void Input::clampUnsignedNormal(UnsignedNormal& value)
+void Strato::Input::clampUnsignedNormal(UnsignedNormal& value)
 {
     value = std::clamp(
         value,
@@ -23,7 +23,7 @@ void Input::clampUnsignedNormal(UnsignedNormal& value)
 /// @brief Generates a ControlState via the keyboard
 /// @param window GLFW Window
 /// @param state Control State
-void Input::keyboardInput(GLFWwindow *window, ControlState& state, double dt)
+void Strato::Input::keyboardInput(GLFWwindow *window, ControlState& state, double dt)
 {
     // control surfaces
     if(glfwGetKey(window, GLFW_KEY_A)) state.aileron += state.keyboardControlRate  * (dt / 2);

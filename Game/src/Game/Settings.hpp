@@ -5,6 +5,8 @@
  * Contains settings used by the StratoGame class
  */
 
-struct Settings {
-    int width, height;
-};
+namespace Strato {
+    struct Settings {
+        int width, height;
+    };
+}

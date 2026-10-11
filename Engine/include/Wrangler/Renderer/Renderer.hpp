@@ -23,12 +23,6 @@
 #include <filament/View.h>
 #include <filament/SwapChain.h>
 
-// #include <filagui/ImGuiHelper.h>
-// #include <imgui.h>
-// #include <imgui_impl_glfw.h>
-
-// #include <memory>
-
 namespace Wrangler {
 
     struct RenderableEntity {

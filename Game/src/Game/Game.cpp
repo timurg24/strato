@@ -4,12 +4,12 @@
 #include <filament/TransformManager.h>
 
 /// @brief Renders debug menus
-void StratoGame::renderDebugMenus()
+void Strato::Game::renderDebugMenus()
 {
 }
 
 /// @brief Updates aircraft rotations
-void StratoGame::updateAircraftTransform()
+void Strato::Game::updateAircraftTransform()
 {
     auto model = app.assets.getModel(aircraft.entity.model);
     if(!model) {
@@ -48,7 +48,7 @@ void StratoGame::updateAircraftTransform()
     tm.setTransform(instance, transform);
 }
 
-StratoGame::StratoGame(Settings settings) : app({.title = "Strato Flight Simulator",
+Strato::Game::Game(Settings settings) : app({.title = "Strato Flight Simulator",
                                                  .width = settings.width,
                                                  .height = settings.height,
                                                  .archivePath = "Content"}),
@@ -81,7 +81,7 @@ StratoGame::StratoGame(Settings settings) : app({.title = "Strato Flight Simulat
 }
 
 /// @brief Update loop
-void StratoGame::run()
+void Strato::Game::run()
 {
 
     constexpr double fixedDt = 1.0 / STRATO_PHYS_HZ;
@@ -105,13 +105,13 @@ void StratoGame::run()
             acc -= fixedDt;
         }
 
+        updateAircraftTransform();
         render();
     }
 }
 
 /// @brief Renders the game
-void StratoGame::render()
+void Strato::Game::render()
 {
-    updateAircraftTransform();
     renderer.renderScene();
 }
